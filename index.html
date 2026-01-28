@@ -187,9 +187,9 @@
   <script>
     // 人員名單
     const personnel = [
-      '排長', '華姐', '家賢', '鈺霖', '岳得', '延鴻', '文郁', '怡佩', '紘旻', '永澤',
-      '德堡', '博宇', '佑昌', '嘉育', '瑞豪', '博程', '煒弘', '瀚偉', '孟唐', '勤堯',
-      '士閎', '逸宸', '治學', '紘銘', '曜誠', '冠妤', '曹凱', '營勤', '榆凱'
+      '排長', '華姐', '家賢', '鈺霖', '岳得', '延鴻', '文傑', '怡佩', '紘旻', '永澤',
+      '德堡', '博宇', '佑昌', '嘉育', '瑞豪', '博允', '煒弘', '瀚偉', '孟唐', '宇堯',
+      '宇閎', '逸宸', '治學', '紘銘', '曜誠', '冠妤', '曹凱', '營勤', '榆凱'
     ];
 
     // 事故類型
@@ -223,7 +223,7 @@
     // 設定明天日期
     function setTodayDate() {
       const today = new Date();
-      today.setDate(today.getDate() + 1); // 加一天
+      today.setDate(today.getDate() + 1);
       const tomorrow = today.toISOString().split('T')[0];
       document.getElementById('report-date').value = tomorrow;
     }
@@ -231,9 +231,10 @@
     // 渲染勾選列表
     function renderCheckboxList(containerId, prefix) {
       const container = document.getElementById(containerId);
+      const time = prefix.split('-')[1];
       container.innerHTML = personnel.map((person, index) => `
         <div>
-          <input type="checkbox" id="${prefix}-${index}" class="checkbox-btn" onchange="updateStats()">
+          <input type="checkbox" id="${prefix}-${index}" class="checkbox-btn" onchange="updateStats(); updateIncidentPersonnelOptions('${time}')">
           <label for="${prefix}-${index}" class="block py-2 px-2 text-center text-sm font-bold rounded-lg cursor-pointer transition-all active:scale-95" style="border: 2px solid #8b3a3a; background: #fff8e7; color: #5a4a3a;">
             ${person}
           </label>
@@ -241,28 +242,22 @@
       `).join('');
     }
 
-    // 渲染排值星選項（排除該時段的事故和休假人員，但保留值班事故人員）
+    // 渲染排值星選項
     function renderDutyOptions(selectId, excludeIncidents = false) {
       const select = document.getElementById(selectId);
       
       let availablePersonnel = [...personnel];
       
       if (excludeIncidents) {
-        // 從 selectId 中提取時段（例如：duty-0620 -> 0620）
         const timeMatch = selectId.match(/(\d{4})/);
         if (timeMatch) {
           const time = timeMatch[1];
-          
-          // 取得該時段的休假人員
           const leave = getSelectedPersonnel(`leave-${time}`);
-          
-          // 取得該時段的事故人員（排除值班事故）
           const incidents = getIncidentInfo(time);
           const excludedPersonnel = incidents
             .filter(inc => !inc.type.includes('值班'))
             .map(inc => inc.person);
           
-          // 排除休假和非值班事故的人員
           availablePersonnel = personnel.filter(person => 
             !leave.includes(person) && !excludedPersonnel.includes(person)
           );
@@ -273,22 +268,12 @@
         availablePersonnel.map(person => `<option value="${person}">${person}</option>`).join('');
     }
 
-    // 更新副值星選項（排除所有的正值星、該時段的事故和休假人員，但保留值班事故人員）
+    // 更新副值星選項
     function updateDeputyOptions(time) {
       const dutySelect = document.getElementById(`duty-${time}`);
       const deputySelect = document.getElementById(`deputy-${time}`);
-      const selectedDuty = dutySelect.value;
-      
-      const allDutyPersonnel = [
-        document.getElementById('duty-0620').value,
-        document.getElementById('duty-0740').value,
-        document.getElementById('duty-1355').value
-      ].filter(v => v);
-      
-      // 取得該時段的休假人員
+      const currentDuty = dutySelect.value;
       const leave = getSelectedPersonnel(`leave-${time}`);
-      
-      // 取得該時段的事故人員（排除值班事故）
       const incidents = getIncidentInfo(time);
       const excludedPersonnel = incidents
         .filter(inc => !inc.type.includes('值班'))
@@ -297,7 +282,7 @@
       deputySelect.innerHTML = '<option value="">選擇人員</option>' + 
         personnel
           .filter(person => 
-            !allDutyPersonnel.includes(person) && 
+            person !== currentDuty && 
             !leave.includes(person) && 
             !excludedPersonnel.includes(person)
           )
@@ -309,6 +294,8 @@
     function addIncident(time) {
       const container = document.getElementById(`incident-list-${time}`);
       const id = incidentCounter[time]++;
+      const leavePersonnel = getSelectedPersonnel(`leave-${time}`);
+      const availablePersonnel = personnel.filter(p => !leavePersonnel.includes(p));
       
       const div = document.createElement('div');
       div.id = `incident-${time}-${id}`;
@@ -316,7 +303,7 @@
       div.innerHTML = `
         <select id="incident-person-${time}-${id}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="updateLeaveAvailability('${time}')">
           <option value="">選擇人員</option>
-          ${personnel.map(p => `<option value="${p}">${p}</option>`).join('')}
+          ${availablePersonnel.map(p => `<option value="${p}">${p}</option>`).join('')}
         </select>
         <select id="incident-type-${time}-${id}" class="w-28 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="toggleCustomInput('${time}', ${id})">
           ${incidentTypes.map(t => `<option value="${t}">${t}</option>`).join('')}
@@ -337,7 +324,7 @@
       updateStats();
     }
     
-    // 更新休假選項的可用狀態（事故人員的休假格子會變暗且無法勾選）
+    // 更新休假選項的可用狀態
     function updateLeaveAvailability(time) {
       const incidents = getIncidentInfo(time);
       const incidentPersonnel = incidents.map(inc => inc.person);
@@ -348,7 +335,6 @@
         
         if (checkbox && label) {
           if (incidentPersonnel.includes(person)) {
-            // 事故人員：禁用且變暗
             checkbox.disabled = true;
             checkbox.checked = false;
             label.style.opacity = '0.4';
@@ -356,7 +342,6 @@
             label.style.background = '#d0d0d0';
             label.style.color = '#888';
           } else {
-            // 非事故人員：恢復正常
             checkbox.disabled = false;
             label.style.opacity = '1';
             label.style.cursor = 'pointer';
@@ -366,10 +351,26 @@
         }
       });
     }
+    
+    // 更新該時段所有事故人員下拉選單的選項
+    function updateIncidentPersonnelOptions(time) {
+      const leavePersonnel = getSelectedPersonnel(`leave-${time}`);
+      
+      document.querySelectorAll(`[id^="incident-person-${time}-"]`).forEach(select => {
+        const currentValue = select.value;
+        const availablePersonnel = personnel.filter(p => !leavePersonnel.includes(p));
+        
+        select.innerHTML = '<option value="">選擇人員</option>' + 
+          availablePersonnel.map(p => `<option value="${p}" ${p === currentValue ? 'selected' : ''}>${p}</option>`).join('');
+        
+        if (currentValue && leavePersonnel.includes(currentValue)) {
+          select.value = '';
+        }
+      });
+    }
 
     // 複製事故人員
     function duplicateIncident(time, id) {
-      // 取得原始事故的資料
       const person = document.getElementById(`incident-person-${time}-${id}`)?.value;
       const type = document.getElementById(`incident-type-${time}-${id}`)?.value;
       const custom = document.getElementById(`incident-custom-${time}-${id}`)?.value;
@@ -381,9 +382,10 @@
         return;
       }
       
-      // 創建新的事故項目
       const container = document.getElementById(`incident-list-${time}`);
       const newId = incidentCounter[time]++;
+      const leavePersonnel = getSelectedPersonnel(`leave-${time}`);
+      const availablePersonnel = personnel.filter(p => !leavePersonnel.includes(p));
       
       const div = document.createElement('div');
       div.id = `incident-${time}-${newId}`;
@@ -391,7 +393,7 @@
       div.innerHTML = `
         <select id="incident-person-${time}-${newId}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="updateLeaveAvailability('${time}')">
           <option value="">選擇人員</option>
-          ${personnel.map(p => `<option value="${p}" ${p === person ? 'selected' : ''}>${p}</option>`).join('')}
+          ${availablePersonnel.map(p => `<option value="${p}" ${p === person ? 'selected' : ''}>${p}</option>`).join('')}
         </select>
         <select id="incident-type-${time}-${newId}" class="w-28 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="toggleCustomInput('${time}', ${newId})">
           ${incidentTypes.map(t => `<option value="${t}" ${t === type ? 'selected' : ''}>${t}</option>`).join('')}
@@ -472,11 +474,21 @@
 
     // 複製上一時段的選擇
     function copyFromPrevious(fromTime, toTime, type) {
-      personnel.forEach((_, index) => {
+      // 取得目前時段已有事故的人員
+      const currentIncidents = getIncidentInfo(toTime);
+      const currentIncidentPersonnel = currentIncidents.map(inc => inc.person);
+      
+      personnel.forEach((person, index) => {
         const fromCheckbox = document.getElementById(`${type}-${fromTime}-${index}`);
         const toCheckbox = document.getElementById(`${type}-${toTime}-${index}`);
-        if (fromCheckbox && toCheckbox) {
-          toCheckbox.checked = fromCheckbox.checked;
+        
+        if (fromCheckbox && toCheckbox && !toCheckbox.disabled) {
+          // 如果該人員在目前時段已有事故，則不勾選
+          if (currentIncidentPersonnel.includes(person)) {
+            toCheckbox.checked = false;
+          } else {
+            toCheckbox.checked = fromCheckbox.checked;
+          }
         }
       });
       updateStats();
@@ -485,12 +497,10 @@
 
     // 複製上一時段的事故人員
     function copyIncidents(fromTime, toTime) {
-      // 先清空目標時段的所有事故
       document.querySelectorAll(`[id^="incident-${toTime}-"]`).forEach(element => {
         element.remove();
       });
       
-      // 取得來源時段的事故資料
       const sourceIncidents = [];
       document.querySelectorAll(`[id^="incident-${fromTime}-"]`).forEach(element => {
         const id = element.id.split('-')[2];
@@ -505,34 +515,75 @@
         }
       });
       
-      // 複製到目標時段
       sourceIncidents.forEach(incident => {
         const container = document.getElementById(`incident-list-${toTime}`);
         const id = incidentCounter[toTime]++;
+        const leavePersonnel = getSelectedPersonnel(`leave-${toTime}`);
+        const availablePersonnel = personnel.filter(p => !leavePersonnel.includes(p));
         
         const div = document.createElement('div');
         div.id = `incident-${toTime}-${id}`;
         div.className = 'flex gap-2 items-center';
-        div.innerHTML = `
-          <select id="incident-person-${toTime}-${id}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="updateLeaveAvailability('${toTime}')">
-            <option value="">選擇人員</option>
-            ${personnel.map(p => `<option value="${p}" ${p === incident.person ? 'selected' : ''}>${p}</option>`).join('')}
-          </select>
-          <select id="incident-type-${toTime}-${id}" class="w-28 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="toggleCustomInput('${toTime}', ${id})">
-            ${incidentTypes.map(t => `<option value="${t}" ${t === incident.type ? 'selected' : ''}>${t}</option>`).join('')}
-          </select>
-          <select id="incident-guard-officer-${toTime}-${id}" class="w-24 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${incident.type === '衛哨' ? '' : 'hidden'}">
-            <option value="">安官</option>
-            ${guardOfficerShifts.map(s => `<option value="${s}" ${s === incident.guardOfficer ? 'selected' : ''}>${s}</option>`).join('')}
-          </select>
-          <select id="incident-deputy-guard-${toTime}-${id}" class="w-24 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${incident.type === '衛哨' ? '' : 'hidden'}">
-            <option value="">副哨</option>
-            ${deputyGuardShifts.map(s => `<option value="${s}" ${s === incident.deputyGuard ? 'selected' : ''}>${s}</option>`).join('')}
-          </select>
-          <input type="text" id="incident-custom-${toTime}-${id}" placeholder="其他事故" value="${incident.custom || ''}" class="w-32 p-2 border-2 border-slate-300 rounded-lg text-sm ${incident.type === '其他' ? '' : 'hidden'}">
-          <button onclick="duplicateIncident('${toTime}', ${id})" class="p-2 bg-green-100 text-green-600 rounded-lg font-bold text-sm active:bg-green-200" title="複製此事故">＋</button>
-          <button onclick="removeIncident('${toTime}', ${id})" class="p-2 bg-red-100 text-red-600 rounded-lg font-bold text-sm active:bg-red-200">✕</button>
-        `;
+        
+        // 創建選人員下拉選單
+        const personSelect = document.createElement('select');
+        personSelect.id = `incident-person-${toTime}-${id}`;
+        personSelect.className = 'flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white';
+        personSelect.onchange = () => updateLeaveAvailability(toTime);
+        personSelect.innerHTML = '<option value="">選擇人員</option>' + 
+          availablePersonnel.map(p => `<option value="${p}" ${p === incident.person ? 'selected' : ''}>${p}</option>`).join('');
+        
+        // 創建事故類型下拉選單
+        const typeSelect = document.createElement('select');
+        typeSelect.id = `incident-type-${toTime}-${id}`;
+        typeSelect.className = 'w-28 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white';
+        typeSelect.onchange = () => toggleCustomInput(toTime, id);
+        typeSelect.innerHTML = incidentTypes.map(t => `<option value="${t}" ${t === incident.type ? 'selected' : ''}>${t}</option>`).join('');
+        
+        // 創建安官時段選單
+        const guardOfficerSelect = document.createElement('select');
+        guardOfficerSelect.id = `incident-guard-officer-${toTime}-${id}`;
+        guardOfficerSelect.className = `w-24 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${incident.type === '衛哨' ? '' : 'hidden'}`;
+        guardOfficerSelect.innerHTML = '<option value="">安官</option>' + 
+          guardOfficerShifts.map(s => `<option value="${s}" ${s === incident.guardOfficer ? 'selected' : ''}>${s}</option>`).join('');
+        
+        // 創建副哨時段選單
+        const deputyGuardSelect = document.createElement('select');
+        deputyGuardSelect.id = `incident-deputy-guard-${toTime}-${id}`;
+        deputyGuardSelect.className = `w-24 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${incident.type === '衛哨' ? '' : 'hidden'}`;
+        deputyGuardSelect.innerHTML = '<option value="">副哨</option>' + 
+          deputyGuardShifts.map(s => `<option value="${s}" ${s === incident.deputyGuard ? 'selected' : ''}>${s}</option>`).join('');
+        
+        // 創建自訂輸入框
+        const customInput = document.createElement('input');
+        customInput.type = 'text';
+        customInput.id = `incident-custom-${toTime}-${id}`;
+        customInput.placeholder = '其他事故';
+        customInput.value = incident.custom || '';
+        customInput.className = `w-32 p-2 border-2 border-slate-300 rounded-lg text-sm ${incident.type === '其他' ? '' : 'hidden'}`;
+        
+        // 創建複製按鈕
+        const duplicateBtn = document.createElement('button');
+        duplicateBtn.onclick = () => duplicateIncident(toTime, id);
+        duplicateBtn.className = 'p-2 bg-green-100 text-green-600 rounded-lg font-bold text-sm active:bg-green-200';
+        duplicateBtn.title = '複製此事故';
+        duplicateBtn.textContent = '＋';
+        
+        // 創建刪除按鈕
+        const removeBtn = document.createElement('button');
+        removeBtn.onclick = () => removeIncident(toTime, id);
+        removeBtn.className = 'p-2 bg-red-100 text-red-600 rounded-lg font-bold text-sm active:bg-red-200';
+        removeBtn.textContent = '✕';
+        
+        // 組裝元素
+        div.appendChild(personSelect);
+        div.appendChild(typeSelect);
+        div.appendChild(guardOfficerSelect);
+        div.appendChild(deputyGuardSelect);
+        div.appendChild(customInput);
+        div.appendChild(duplicateBtn);
+        div.appendChild(removeBtn);
+        
         container.appendChild(div);
       });
       
@@ -567,7 +618,6 @@
         if (person && type) {
           let incidentType = type === '其他' && custom ? custom : type;
           
-          // 如果是衛哨，加上時段資訊
           if (type === '衛哨') {
             const shifts = [];
             if (guardOfficer) shifts.push(`安官${guardOfficer}`);
@@ -583,13 +633,12 @@
       return incidents;
     }
 
-    // 計算無事故人員（排除有事故和休假的人）
+    // 計算無事故人員
     function getNoIncidentPersonnel(time) {
       const leave = getSelectedPersonnel(`leave-${time}`);
       const incidents = getIncidentInfo(time);
       const incidentPersonnel = incidents.map(inc => inc.person);
       
-      // 無事故人員 = 全部人員 - 休假人員 - 事故人員
       const noIncident = personnel.filter(person => 
         !leave.includes(person) && !incidentPersonnel.includes(person)
       );
@@ -610,7 +659,6 @@
         document.getElementById(`stat-present-${time}`).textContent = present;
         document.getElementById(`stat-incident-${time}`).textContent = incident;
         
-        // 重新渲染排值星選項，排除事故人員
         renderDutyOptions(`duty-${time}`, true);
         updateDeputyOptions(time);
       });
@@ -639,12 +687,10 @@
 
       let report = `@All\n${dateStr}事故\n\n`;
 
-      // 三個時段
       ['0620', '0740', '1355'].forEach((time, idx) => {
         const icon = idx === 0 ? '🔻' : '🔺';
         report += `${icon}${time}無事故：\n`;
         
-        // 自動計算無事故人員
         const noIncident = getNoIncidentPersonnel(time);
         report += noIncident.length > 0 ? noIncident.join('、') : '（無）';
         report += '\n';
@@ -653,7 +699,6 @@
         if (incidents.length > 0) {
           report += '📃事故\n';
           
-          // 將相同事故的人員合併
           const incidentGroups = {};
           incidents.forEach(inc => {
             if (!incidentGroups[inc.type]) {
@@ -662,7 +707,6 @@
             incidentGroups[inc.type].push(inc.person);
           });
           
-          // 按事故類型輸出
           Object.keys(incidentGroups).forEach(type => {
             const people = incidentGroups[type].join('、');
             report += `${type}：${people}\n`;
@@ -680,7 +724,6 @@
         report += `\n📊應到：${total} 實到：${present} 事故：${incidentCount}\n\n`;
       });
 
-      // 排值星
       report += '📋排值星：\n';
       ['0620', '0740', '1355'].forEach(time => {
         const duty = document.getElementById(`duty-${time}`).value || '（未指定）';
@@ -692,15 +735,9 @@
         }
       });
 
-      // 結尾訊息
-      report += '\n請各位學長姐看完之後有任何問題請向排值星反應。 謝謝🙏';
-
-      // 過濾亂碼字元（保留中文、英文、數字、常用標點符號和 emoji）
-      report = report.replace(/[^\u4e00-\u9fa5\u3000-\u303F\uFF00-\uFFEF\u0020-\u007E\u2000-\u206F\u2600-\u27BF\uD800-\uDFFF\n]/g, '');
+      report += '\n請各位弟兄長姐看完之後有任何問題請向排值星反應。 謝謝🙏';
       
       document.getElementById('report-preview').textContent = report;
-      
-      // 自動捲到文案預覽區
       document.getElementById('report-preview').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
@@ -742,8 +779,7 @@
       }, 2000);
     }
 
-    // 初始化
     init();
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c4cd15f228c6a8a',t:'MTc2OTU2NDgwNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c4d919613280740',t:'MTc2OTU3MjY3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
