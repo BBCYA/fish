@@ -187,7 +187,7 @@
   <script>
     // 人員名單
     const personnel = [
-      '排長', '華姐', '家賢', '鈺霖', '岳得', '延鴻', '文傑', '怡佩', '紘旻', '永澤',
+      '排長', '華姐', '家賢', '鈺霖', '岳得', '延鴻', '文郁', '怡佩', '紘旻', '永澤',
       '德堡', '博宇', '佑昌', '嘉育', '瑞豪', '博程', '煒弘', '瀚偉', '孟唐', '勤堯',
       '士閎', '逸宸', '治學', '紘銘', '曜誠', '冠妤', '曹凱', '營勤', '榆凱'
     ];
@@ -220,10 +220,12 @@
       });
     }
 
-    // 設定今天日期
+    // 設定明天日期
     function setTodayDate() {
-      const today = new Date().toISOString().split('T')[0];
-      document.getElementById('report-date').value = today;
+      const today = new Date();
+      today.setDate(today.getDate() + 1); // 加一天
+      const tomorrow = today.toISOString().split('T')[0];
+      document.getElementById('report-date').value = tomorrow;
     }
 
     // 渲染勾選列表
@@ -743,5 +745,5 @@
     // 初始化
     init();
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c49591b76444a5a',t:'MTc2OTUyODQyMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c4cd15f228c6a8a',t:'MTc2OTU2NDgwNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
