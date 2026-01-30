@@ -3,12 +3,68 @@
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>微波排值星🌟（公測版）</title>
+  <title>微波排值星（公測版）</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;family=DotGothic16&amp;display=swap" rel="stylesheet">
   <style>
+    /* 手機橫向滑動優化 */
+    @media (max-width: 768px) {
+      .time-section {
+        scroll-snap-align: start;
+      }
+      
+      /* 隱藏滾動��但保持功能 */
+      .overflow-x-auto::-webkit-scrollbar {
+        display: none;
+      }
+      .overflow-x-auto {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    }
+    
+    /* 觸控友善 - 增加按鈕�����擊區域 */
+    button, label, select, input {
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+    }
+    
+    /* 滑動���示器 */
+    .scroll-indicator {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 40;
+      padding: 6px 12px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+    }
+    
+    .scroll-indicator-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .scroll-indicator-dot.active {
+      background: #fff;
+      width: 20px;
+      border-radius: 3px;
+    }
+    
+    @media (min-width: 768px) {
+      .scroll-indicator {
+        display: none;
+      }
+    }
+    
     body {
       box-sizing: border-box;
     }
@@ -16,7 +72,7 @@
       font-family: 'DotGothic16', 'Press Start 2P', monospace, sans-serif;
     }
     
-    /* 浮世繪波浪背景 */
+    /* �����繪風背景 */
     .wave-pattern {
       background-color: #f4e8d8;
       background-image: 
@@ -38,7 +94,8 @@
     }
     .checkbox-btn + label {
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      transition: all 0.2s ease;
+      transition: transform 0.1s ease, background 0.15s ease, color 0.15s ease, border 0.15s ease, box-shadow 0.15s ease;
+      will-change: transform;
     }
     .toast {
       animation: slideUp 0.3s ease-out, fadeOut 0.3s ease-in 1.7s forwards;
@@ -72,7 +129,9 @@
       pointer-events: none;
     }
     
-    /* 日式印章效果 */
+
+    
+    /* 日本印章效果 */
     .seal-stamp {
       display: inline-block;
       width: 24px;
@@ -94,6 +153,380 @@
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
       letter-spacing: 0.1em;
     }
+    
+    /* 微妙動畫 - 混搭風格 */
+    
+    /* Ripple Effect - 水紋效果 */
+    @keyframes ripple {
+      0% {
+        transform: scale(0);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+    
+    .ripple-container {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.6);
+      pointer-events: none;
+      animation: ripple 0.6s ease-out;
+    }
+    
+    /* Wave Effect - 背景波浪 */
+    @keyframes wave-slide {
+      0% { background-position: 0 0; }
+      100% { background-position: 40px 40px; }
+    }
+    
+    @keyframes wave-float {
+      0%, 100% { transform: translateY(0px) translateX(0px); }
+      25% { transform: translateY(-3px) translateX(2px); }
+      50% { transform: translateY(0px) translateX(4px); }
+      75% { transform: translateY(3px) translateX(2px); }
+    }
+    
+    .wave-pattern {
+      animation: wave-slide 20s linear infinite;
+    }
+    
+    /* Stamp Bounce Animation */
+    @keyframes stamp-bounce {
+      0%, 100% { transform: rotate(-5deg) scale(1); }
+      10% { transform: rotate(-5deg) scale(1.2) translateY(-5px); }
+      20% { transform: rotate(-5deg) scale(0.95); }
+      30% { transform: rotate(-5deg) scale(1.05); }
+      40% { transform: rotate(-5deg) scale(1); }
+    }
+    
+    .seal-stamp {
+      animation: stamp-bounce 3s ease-in-out infinite;
+      cursor: pointer;
+    }
+    
+    .seal-stamp:hover {
+      animation: stamp-bounce 0.5s ease-in-out infinite;
+    }
+    
+    /* Section Appear with Scale */
+    @keyframes section-appear {
+      from { 
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+      }
+      to { 
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    
+    .time-section {
+      animation: section-appear 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      opacity: 0;
+    }
+    
+    .time-section:nth-child(1) { animation-delay: 0.1s; }
+    .time-section:nth-child(2) { animation-delay: 0.25s; }
+    .time-section:nth-child(3) { animation-delay: 0.4s; }
+    .time-section:nth-child(4) { animation-delay: 0.55s; }
+    
+    /* Glow Effect for Buttons */
+    @keyframes glow-pulse {
+      0%, 100% { 
+        box-shadow: 0 4px 12px rgba(70, 130, 180, 0.4);
+        filter: brightness(1);
+      }
+      50% { 
+        box-shadow: 0 6px 24px rgba(70, 130, 180, 0.8), 0 0 40px rgba(70, 130, 180, 0.4);
+        filter: brightness(1.15);
+      }
+    }
+    
+    @keyframes glow-pulse-red {
+      0%, 100% { 
+        box-shadow: 0 4px 12px rgba(205, 92, 92, 0.4);
+        filter: brightness(1);
+      }
+      50% { 
+        box-shadow: 0 6px 24px rgba(205, 92, 92, 0.8), 0 0 40px rgba(205, 92, 92, 0.4);
+        filter: brightness(1.15);
+      }
+    }
+    
+    /* Enhanced Shadow Animation */
+    @keyframes shadow-grow {
+      0% { box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
+      100% { box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25), 0 0 20px rgba(70, 130, 180, 0.3); }
+    }
+    
+    /* Bounce Scale Animation */
+    @keyframes bounce-scale {
+      0% { transform: scale(1); }
+      25% { transform: scale(0.92); }
+      50% { transform: scale(1.08); }
+      75% { transform: scale(0.98); }
+      100% { transform: scale(1); }
+    }
+    
+    /* Checkbox Labels - Mixed Effects */
+    .checkbox-btn + label {
+      transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .checkbox-btn + label::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(205, 92, 92, 0.2);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.4s ease, height 0.4s ease;
+    }
+    
+    .checkbox-btn:checked + label::before {
+      width: 300px;
+      height: 300px;
+    }
+    
+    .checkbox-btn + label:hover {
+      transform: translateY(-4px) scale(1.05);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 0 20px rgba(139, 58, 58, 0.3);
+    }
+    
+    .checkbox-btn + label:active {
+      animation: bounce-scale 0.4s ease-out;
+    }
+    
+    /* Button Hover Effects - Mixed */
+    button {
+      transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    button::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s ease, height 0.6s ease;
+    }
+    
+    button:hover::after {
+      width: 300px;
+      height: 300px;
+    }
+    
+    button:hover:not(:disabled) {
+      transform: translateY(-4px) scale(1.05);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    }
+    
+    button:active:not(:disabled) {
+      transform: translateY(-1px) scale(0.98);
+      animation: bounce-scale 0.3s ease-out;
+    }
+    
+    /* Select Focus State with Glow */
+    select {
+      transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    
+    select:hover {
+      transform: scale(1.02);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    select:focus {
+      transform: scale(1.04);
+      box-shadow: 0 0 0 4px rgba(70, 130, 180, 0.3), 0 8px 16px rgba(70, 130, 180, 0.2);
+      outline: none;
+      animation: glow-pulse 2s ease-in-out infinite;
+    }
+    
+    /* Input Date - Bounce + Glow */
+    input[type="date"] {
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    
+    input[type="date"]:hover {
+      transform: scale(1.08) rotate(-2deg);
+      box-shadow: 0 8px 20px rgba(205, 92, 92, 0.4), 0 0 30px rgba(205, 92, 92, 0.3);
+      animation: wave-float 2s ease-in-out infinite;
+    }
+    
+    input[type="date"]:focus {
+      transform: scale(1.1);
+      box-shadow: 0 12px 32px rgba(205, 92, 92, 0.6), 0 0 50px rgba(205, 92, 92, 0.4);
+      animation: glow-pulse-red 1.5s ease-in-out infinite;
+    }
+    
+    /* Input Text - Ripple Focus */
+    input[type="text"] {
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    input[type="text"]:focus {
+      transform: scale(1.03);
+      box-shadow: 0 0 0 3px rgba(70, 130, 180, 0.3), 0 8px 16px rgba(70, 130, 180, 0.2);
+      animation: input-glow 0.6s ease-out;
+    }
+    
+    @keyframes input-glow {
+      0%, 100% { box-shadow: 0 0 0 3px rgba(70, 130, 180, 0.3), 0 8px 16px rgba(70, 130, 180, 0.2); }
+      50% { box-shadow: 0 0 0 6px rgba(70, 130, 180, 0.5), 0 12px 24px rgba(70, 130, 180, 0.4); }
+    }
+    
+    /* Report Preview - Scale + Glow */
+    #report-preview {
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    
+    #report-preview.updated {
+      animation: content-refresh 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    
+    @keyframes content-refresh {
+      0% { 
+        opacity: 0.5;
+        transform: scale(0.95) rotateX(10deg);
+      }
+      50% { 
+        opacity: 0.8;
+        transform: scale(1.05) rotateX(-5deg);
+        box-shadow: 0 20px 40px rgba(70, 130, 180, 0.4);
+      }
+      100% { 
+        opacity: 1;
+        transform: scale(1) rotateX(0deg);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+    }
+    
+    /* Footer Buttons - Glow Pulse */
+    footer button:nth-child(1):hover {
+      animation: glow-pulse 1.5s ease-in-out infinite;
+    }
+    
+    footer button:nth-child(2):hover {
+      animation: glow-pulse-red 1.5s ease-in-out infinite;
+    }
+    
+    /* Incident Row - Slide + Scale */
+    .incident-row {
+      animation: row-appear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      position: relative;
+    }
+    
+    .incident-row > select,
+    .incident-row > input {
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+    
+    .incident-row > button {
+      flex-shrink: 0;
+    }
+    
+    @keyframes row-appear {
+      from {
+        opacity: 0;
+        transform: translateX(-40px) scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+      }
+    }
+    
+    .incident-row.removing {
+      animation: row-remove 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+    }
+    
+    @keyframes row-remove {
+      0% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+      }
+      50% {
+        opacity: 0.5;
+        transform: translateX(30px) scale(1.1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(60px) scale(0.6);
+      }
+    }
+    
+    /* Header Wave Effect */
+    header {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 248, 231, 0.1) 0%, transparent 70%);
+      animation: wave-rotate 20s linear infinite;
+      pointer-events: none;
+    }
+    
+    @keyframes wave-rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Stats Animation */
+    .bg-slate-50 {
+      transition: all 0.3s ease;
+    }
+    
+    .bg-slate-50:hover {
+      transform: scale(1.02);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    }
+
+    /* History Badge */
+    .history-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 10px;
+      font-weight: bold;
+      margin-left: 8px;
+      box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+    }
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -102,89 +535,307 @@
  <body class="h-full wave-pattern">
   <div id="app" class="h-full w-full overflow-auto"><!-- Header -->
    <header class="bg-gradient-to-r from-indigo-900 via-indigo-800 to-indigo-900 text-amber-50 py-5 px-4 sticky top-0 z-50" style="box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 248, 231, 0.2);">
-    <h1 class="text-2xl font-black text-center tracking-wide brush-title" style="color: #fff8e7;"><span class="seal-stamp" style="margin-right: 8px;">報</span>每日事故回報系統</h1>
-    <div class="flex items-center justify-center gap-2 mt-3"><input type="date" id="report-date" class="px-5 py-3 rounded-xl text-amber-900 text-lg font-black cursor-pointer transition-all hover:scale-105 active:scale-95" style="background: linear-gradient(135deg, #fff8e7 0%, #fef5e7 100%); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), inset 0 1px 3px rgba(255, 255, 255, 0.6); border: 4px solid #cd5c5c;">
+    <h1 class="text-2xl font-black text-center tracking-wide brush-title" style="color: #fff8e7;"><span class="seal-stamp" style="margin-right: 8px;">報</span>微波排值星（公測版）</h1>
+    <div class="flex items-center justify-center gap-2 mt-3"><input type="date" id="report-date" class="px-5 py-3 rounded-xl text-amber-900 text-lg font-black cursor-pointer transition-all hover:scale-105 active:scale-95" style="background: linear-gradient(135deg, #fff8e7 0%, #fef5e7 100%); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), inset 0 1px 3px rgba(255, 255, 255, 0.6); border: 4px solid #cd5c5c;" onchange="loadDataForDate()"> <button onclick="toggleHistoryPanel()" class="px-4 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105 active:scale-95" style="background: linear-gradient(135deg, #8b7355 0%, #6b5744 100%); color: #fff8e7; box-shadow: 0 4px 12px rgba(139, 115, 85, 0.4);"> 📚 歷史 </button>
     </div>
-   </header>
-   <main class="max-w-2xl mx-auto p-4 pb-32"><!-- 0620 時段 -->
-    <section class="bg-white rounded-xl shadow-md p-4 mb-4 time-section">
-     <h2 class="text-xl font-black brush-title mb-4" style="color: #8b3a3a;">🌊 0620</h2><!-- 事故人員 -->
-     <div class="mb-4">
-      <h3 class="text-base font-bold text-slate-800 mb-2">▪️ 事故</h3>
-      <div id="incident-list-0620" class="space-y-2"></div><button onclick="addIncident('0620')" class="mt-2 w-full py-2 rounded-lg text-sm font-bold active:scale-95 transition-all border-2 border-dashed" style="background: #fff8e7; color: #cd5c5c; border-color: #cd5c5c;"> ＋ 新增事故人員 </button>
-     </div><!-- 休假人員 -->
-     <div class="mb-4">
-      <h3 class="text-base font-bold text-slate-800 mb-2">🏖️ 休假</h3>
-      <div id="leave-0620" class="grid grid-cols-4 gap-2 mb-2"></div>
-      <div class="flex gap-2"><button onclick="selectAll('0620', 'leave')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: linear-gradient(135deg, #4682b4 0%, #36648b 100%); color: #fff8e7; box-shadow: 0 2px 8px rgba(70, 130, 180, 0.3);">全選</button> <button onclick="clearAll('0620', 'leave')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: #e8dcc8; color: #5a4a3a; border: 2px solid #c9b89a; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">清除</button>
-      </div>
-     </div><!-- 統計 -->
-     <div class="bg-slate-50 rounded-lg p-3">
-      <p class="text-sm font-semibold text-slate-700">📊 應到：<span id="stat-total-0620">29</span> 實到：<span id="stat-present-0620">0</span> 事故：<span id="stat-incident-0620">0</span></p>
+   </header><!-- History Panel -->
+   <div id="history-panel" class="hidden max-w-2xl mx-auto mt-4 px-4">
+    <div class="bg-white rounded-xl shadow-lg p-4 border-4 border-indigo-200">
+     <div class="flex justify-between items-center mb-3">
+      <h2 class="text-lg font-black text-slate-800">📚 歷史紀錄</h2><button onclick="toggleHistoryPanel()" class="text-slate-400 hover:text-slate-600 font-bold text-xl">✕</button>
      </div>
-    </section><!-- 0740 時段 -->
-    <section class="bg-white rounded-xl shadow-md p-4 mb-4 time-section">
-     <h2 class="text-xl font-black brush-title mb-4" style="color: #8b3a3a;">🌊 0740</h2><!-- 事故人員 -->
-     <div class="mb-4">
-      <h3 class="text-base font-bold text-slate-800 mb-2">▪️ 事故</h3>
-      <div id="incident-list-0740" class="space-y-2"></div>
-      <div class="flex gap-2 mt-2"><button onclick="addIncident('0740')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all border-2 border-dashed" style="background: #fff8e7; color: #cd5c5c; border-color: #cd5c5c;"> ＋ 新增事故人員 </button> <button onclick="copyIncidents('0620', '0740')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: linear-gradient(135deg, #8b7355 0%, #6b5744 100%); color: #fff8e7; box-shadow: 0 2px 8px rgba(139, 115, 85, 0.3);">同上</button>
-      </div>
-     </div><!-- 休假人員 -->
-     <div class="mb-4">
-      <h3 class="text-base font-bold text-slate-800 mb-2">🏖️ 休假</h3>
-      <div id="leave-0740" class="grid grid-cols-4 gap-2 mb-2"></div>
-      <div class="flex gap-2"><button onclick="selectAll('0740', 'leave')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: linear-gradient(135deg, #4682b4 0%, #36648b 100%); color: #fff8e7; box-shadow: 0 2px 8px rgba(70, 130, 180, 0.3);">全選</button> <button onclick="clearAll('0740', 'leave')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: #e8dcc8; color: #5a4a3a; border: 2px solid #c9b89a; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">清除</button> <button onclick="copyFromPrevious('0620', '0740', 'leave')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: linear-gradient(135deg, #8b7355 0%, #6b5744 100%); color: #fff8e7; box-shadow: 0 2px 8px rgba(139, 115, 85, 0.3);">同上</button>
-      </div>
-     </div><!-- 統計 -->
-     <div class="bg-slate-50 rounded-lg p-3">
-      <p class="text-sm font-semibold text-slate-700">📊 應到：<span id="stat-total-0740">29</span> 實到：<span id="stat-present-0740">0</span> 事故：<span id="stat-incident-0740">0</span></p>
+     <div id="history-list" class="space-y-2 max-h-64 overflow-y-auto"><!-- 動態填入 -->
      </div>
-    </section><!-- 1355 時段 -->
-    <section class="bg-white rounded-xl shadow-md p-4 mb-4 time-section">
-     <h2 class="text-xl font-black brush-title mb-4" style="color: #8b3a3a;">🌊 1355</h2><!-- 事故人員 -->
-     <div class="mb-4">
-      <h3 class="text-base font-bold text-slate-800 mb-2">▪️ 事故</h3>
-      <div id="incident-list-1355" class="space-y-2"></div>
-      <div class="flex gap-2 mt-2"><button onclick="addIncident('1355')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all border-2 border-dashed" style="background: #fff8e7; color: #cd5c5c; border-color: #cd5c5c;"> ＋ 新增事故人員 </button> <button onclick="copyIncidents('0740', '1355')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: linear-gradient(135deg, #8b7355 0%, #6b5744 100%); color: #fff8e7; box-shadow: 0 2px 8px rgba(139, 115, 85, 0.3);">同上</button>
-      </div>
-     </div><!-- 休假人員 -->
-     <div class="mb-4">
-      <h3 class="text-base font-bold text-slate-800 mb-2">🏖️ 休假</h3>
-      <div id="leave-1355" class="grid grid-cols-4 gap-2 mb-2"></div>
-      <div class="flex gap-2"><button onclick="selectAll('1355', 'leave')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: linear-gradient(135deg, #4682b4 0%, #36648b 100%); color: #fff8e7; box-shadow: 0 2px 8px rgba(70, 130, 180, 0.3);">全選</button> <button onclick="clearAll('1355', 'leave')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: #e8dcc8; color: #5a4a3a; border: 2px solid #c9b89a; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">清除</button> <button onclick="copyFromPrevious('0740', '1355', 'leave')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: linear-gradient(135deg, #8b7355 0%, #6b5744 100%); color: #fff8e7; box-shadow: 0 2px 8px rgba(139, 115, 85, 0.3);">同上</button>
-      </div>
-     </div><!-- 統計 -->
-     <div class="bg-slate-50 rounded-lg p-3">
-      <p class="text-sm font-semibold text-slate-700">📊 應到：<span id="stat-total-1355">26</span> 實到：<span id="stat-present-1355">0</span> 事故：<span id="stat-incident-1355">0</span></p>
+     <div class="mt-4 pt-3 border-t-2 border-slate-200 flex gap-2"><button onclick="exportData()" class="flex-1 py-2 rounded-lg text-sm font-bold transition-all hover:scale-105 active:scale-95" style="background: linear-gradient(135deg, #4682b4 0%, #36648b 100%); color: #fff8e7;"> 💾 匯出備份 </button> <button onclick="document.getElementById('import-file').click()" class="flex-1 py-2 rounded-lg text-sm font-bold transition-all hover:scale-105 active:scale-95" style="background: linear-gradient(135deg, #8b7355 0%, #6b5744 100%); color: #fff8e7;"> 📂 匯入備份 </button> <input type="file" id="import-file" accept=".json" style="display: none;" onchange="importData(event)">
      </div>
-    </section><!-- 排值星 -->
-    <section class="bg-white rounded-xl shadow-md p-4 mb-4">
-     <h2 class="text-lg font-bold text-slate-800 mb-4">📋 排值星</h2>
+    </div>
+   </div>
+   <main class="pb-32 px-3"><!-- 手機橫向滑動容器 -->
+    <div class="md:max-w-2xl md:mx-auto md:space-y-4"><!-- ��面版：直向堆疊 / 手機版：橫向滑動 -->
+     <div class="md:block overflow-x-auto snap-x snap-mandatory -mx-3 px-3 md:mx-0 md:px-0 md:overflow-visible mt-4">
+      <div class="flex md:flex-col gap-3 md:gap-4" style="width: max-content; min-width: 100%;"><!-- 0620 時段 -->
+       <section class="bg-white rounded-xl shadow-md p-3 time-section snap-start flex-shrink-0 md:w-full md:max-w-none" style="width: 90vw;">
+        <h2 class="text-xl font-black brush-title mb-4" style="color: #8b3a3a;">🌊 0620</h2><!-- 事故人員 -->
+        <div class="mb-4">
+         <div class="flex items-center justify-between mb-2">
+          <h3 class="text-base font-bold text-slate-800">▪️ 事故</h3><button onclick="toggleBatchMode('0620')" id="batch-btn-0620" class="px-3 py-1 rounded-lg text-xs font-bold transition-all" style="background: linear-gradient(135deg, #8b7355 0%, #6b5744 100%); color: #fff8e7;"> 批次選擇 </button>
+         </div>
+         <div id="batch-panel-0620" class="hidden mb-3 p-3 rounded-lg border-2 border-dashed border-indigo-400 bg-indigo-50">
+          <div class="flex items-center justify-between mb-2">
+           <p class="text-xs font-bold text-slate-700">選擇多人批次加入事故：</p><button onclick="batchSelectAll('0620')" class="px-3 py-1 rounded-lg text-xs font-bold transition-all" style="background: linear-gradient(135deg, #4682b4 0%, #36648b 100%); color: #fff8e7;"> 全選 </button>
+          </div>
+          <div id="batch-personnel-0620" class="grid grid-cols-4 gap-2 mb-3"></div>
+          <div class="flex gap-2 mb-2"><select id="batch-type-0620" class="flex-1 p-2 border-2 border-indigo-300 rounded-lg text-sm bg-white" onchange="toggleBatchCustomInput('0620')"> <option value="外宿">外宿</option> <option value="飯班">飯班</option> <option value="值星">值星</option> <option value="FOD">FOD</option> <option value="夜機">夜機</option> <option value="值班">值班</option> <option value="衛哨">衛哨</option> <option value="領��">領裝</option> <option value="作業">作業</option> <option value="預保">預保</option> <option value="割草班">割草班</option> <option value="公���">公假</option> <option value="查哨">查哨</option> <option value="受訓">受訓</option> <option value="���援">支援</option> <option value="其他">其他</option> </select>
+          </div><input type="text" id="batch-custom-0620" placeholder="���輸入其他事故名稱" class="hidden w-full p-2 border-2 border-indigo-300 rounded-lg text-sm mb-2">
+          <div class="flex gap-2"><button onclick="applyBatchIncident('0620')" class="flex-1 py-2 rounded-lg text-sm font-bold" style="background: linear-gradient(135deg, #4682b4 0%, #36648b 100%); color: #fff8e7;"> ✓ 批次新增 </button> <button onclick="cancelBatchMode('0620')" class="flex-1 py-2 rounded-lg text-sm font-bold" style="background: #e8dcc8; color: #5a4a3a;"> 取消 </button>
+          </div>
+         </div>
+         <div id="incident-list-0620" class="space-y-2"></div><button onclick="addIncident('0620')" class="mt-2 w-full py-2 rounded-lg text-sm font-bold active:scale-95 transition-all border-2 border-dashed" style="background: #fff8e7; color: #cd5c5c; border-color: #cd5c5c;"> ＋ 新增事故人員 </button>
+        </div><!-- 休假人員 -->
+        <div class="mb-4">
+         <h3 class="text-base font-bold text-slate-800 mb-2">🏖️ 休假</h3>
+         <div id="leave-0620" class="grid grid-cols-4 gap-2 mb-2"></div>
+         <div class="flex gap-2"><button onclick="selectAll('0620', 'leave')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: linear-gradient(135deg, #4682b4 0%, #36648b 100%); color: #fff8e7; box-shadow: 0 2px 8px rgba(70, 130, 180, 0.3);">全選</button> <button onclick="clearAll('0620', 'leave')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: #e8dcc8; color: #5a4a3a; border: 2px solid #c9b89a; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">清除</button>
+         </div>
+        </div><!-- 統計 -->
+        <div class="bg-slate-50 rounded-lg p-3">
+         <p class="text-sm font-semibold text-slate-700">📊 應到：<span id="stat-total-0620">29</span> 實到：<span id="stat-present-0620">0</span> 事故：<span id="stat-incident-0620">0</span></p>
+        </div>
+       </section><!-- 0740 時段 -->
+       <section class="bg-white rounded-xl shadow-md p-3 time-section snap-start flex-shrink-0 md:w-full md:max-w-none" style="width: 90vw;">
+        <h2 class="text-xl font-black brush-title mb-4" style="color: #8b3a3a;">🌊 0740</h2><!-- 事故人員 -->
+        <div class="mb-4">
+         <div class="flex items-center justify-between mb-2">
+          <h3 class="text-base font-bold text-slate-800">▪️ 事故</h3><button onclick="toggleBatchMode('0740')" id="batch-btn-0740" class="px-3 py-1 rounded-lg text-xs font-bold transition-all" style="background: linear-gradient(135deg, #8b7355 0%, #6b5744 100%); color: #fff8e7;"> 批次選擇 </button>
+         </div>
+         <div id="batch-panel-0740" class="hidden mb-3 p-3 rounded-lg border-2 border-dashed border-indigo-400 bg-indigo-50">
+          <div class="flex items-center justify-between mb-2">
+           <p class="text-xs font-bold text-slate-700">選擇多人批次加入事故：</p><button onclick="batchSelectAll('0740')" class="px-3 py-1 rounded-lg text-xs font-bold transition-all" style="background: linear-gradient(135deg, #4682b4 0%, #36648b 100%); color: #fff8e7;"> 全選 </button>
+          </div>
+          <div id="batch-personnel-0740" class="grid grid-cols-4 gap-2 mb-3"></div>
+          <div class="flex gap-2 mb-2"><select id="batch-type-0740" class="flex-1 p-2 border-2 border-indigo-300 rounded-lg text-sm bg-white" onchange="toggleBatchCustomInput('0740')"> <option value="飯班">飯班</option> <option value="值星">值星</option> <option value="FOD">FOD</option> <option value="夜機">夜機</option> <option value="值班">值班</option> <option value="衛哨">衛哨</option> <option value="領裝">領裝</option> <option value="作業">作業</option> <option value="預保">預保</option> <option value="割草班">割草班</option> <option value="公假">公假</option> <option value="查哨">查哨</option> <option value="受訓">受訓</option> <option value="支援">支援</option> <option value="其他">其他</option> </select>
+          </div><input type="text" id="batch-custom-0740" placeholder="請輸入其他事故名稱" class="hidden w-full p-2 border-2 border-indigo-300 rounded-lg text-sm mb-2">
+          <div class="flex gap-2"><button onclick="applyBatchIncident('0740')" class="flex-1 py-2 rounded-lg text-sm font-bold" style="background: linear-gradient(135deg, #4682b4 0%, #36648b 100%); color: #fff8e7;"> ✓ 批次新增 </button> <button onclick="cancelBatchMode('0740')" class="flex-1 py-2 rounded-lg text-sm font-bold" style="background: #e8dcc8; color: #5a4a3a;"> 取消 </button>
+          </div>
+         </div>
+         <div id="incident-list-0740" class="space-y-2"></div>
+         <div class="flex gap-2 mt-2"><button onclick="addIncident('0740')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all border-2 border-dashed" style="background: #fff8e7; color: #cd5c5c; border-color: #cd5c5c;"> ＋ 新增事故人員 </button> <button onclick="copyIncidents('0620', '0740')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: linear-gradient(135deg, #8b7355 0%, #6b5744 100%); color: #fff8e7; box-shadow: 0 2px 8px rgba(139, 115, 85, 0.3);">同上</button>
+         </div>
+        </div><!-- 休假人員 -->
+        <div class="mb-4">
+         <h3 class="text-base font-bold text-slate-800 mb-2">🏖️ 休假</h3>
+         <div id="leave-0740" class="grid grid-cols-4 gap-2 mb-2"></div>
+         <div class="flex gap-2"><button onclick="selectAll('0740', 'leave')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: linear-gradient(135deg, #4682b4 0%, #36648b 100%); color: #fff8e7; box-shadow: 0 2px 8px rgba(70, 130, 180, 0.3);">全選</button> <button onclick="clearAll('0740', 'leave')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: #e8dcc8; color: #5a4a3a; border: 2px solid #c9b89a; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">清除</button> <button onclick="copyFromPrevious('0620', '0740', 'leave')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: linear-gradient(135deg, #8b7355 0%, #6b5744 100%); color: #fff8e7; box-shadow: 0 2px 8px rgba(139, 115, 85, 0.3);">同上</button>
+         </div>
+        </div><!-- 統計 -->
+        <div class="bg-slate-50 rounded-lg p-3">
+         <p class="text-sm font-semibold text-slate-700">📊 應到：<span id="stat-total-0740">29</span> 實到：<span id="stat-present-0740">0</span> 事故：<span id="stat-incident-0740">0</span></p>
+        </div>
+       </section><!-- 1355 時段 -->
+       <section class="bg-white rounded-xl shadow-md p-3 time-section snap-start flex-shrink-0 md:w-full md:max-w-none" style="width: 90vw;">
+        <h2 class="text-xl font-black brush-title mb-4" style="color: #8b3a3a;">🌊 1355</h2><!-- 事故人員 -->
+        <div class="mb-4">
+         <div class="flex items-center justify-between mb-2">
+          <h3 class="text-base font-bold text-slate-800">▪️ 事故</h3><button onclick="toggleBatchMode('1355')" id="batch-btn-1355" class="px-3 py-1 rounded-lg text-xs font-bold transition-all" style="background: linear-gradient(135deg, #8b7355 0%, #6b5744 100%); color: #fff8e7;"> 批次選擇 </button>
+         </div>
+         <div id="batch-panel-1355" class="hidden mb-3 p-3 rounded-lg border-2 border-dashed border-indigo-400 bg-indigo-50">
+          <div class="flex items-center justify-between mb-2">
+           <p class="text-xs font-bold text-slate-700">選擇多人批次加入事故：</p><button onclick="batchSelectAll('1355')" class="px-3 py-1 rounded-lg text-xs font-bold transition-all" style="background: linear-gradient(135deg, #4682b4 0%, #36648b 100%); color: #fff8e7;"> 全選 </button>
+          </div>
+          <div id="batch-personnel-1355" class="grid grid-cols-4 gap-2 mb-3"></div>
+          <div class="flex gap-2 mb-2"><select id="batch-type-1355" class="flex-1 p-2 border-2 border-indigo-300 rounded-lg text-sm bg-white" onchange="toggleBatchCustomInput('1355')"> <option value="飯班">飯班</option> <option value="值星">值星</option> <option value="FOD">FOD</option> <option value="夜機">夜機</option> <option value="值班">值班</option> <option value="衛哨">衛哨</option> <option value="領裝">領裝</option> <option value="作業">作業</option> <option value="預保">預保</option> <option value="割草班">割草班</option> <option value="公假">公假</option> <option value="查哨">查哨</option> <option value="受訓">受訓</option> <option value="支援">支援</option> <option value="其他">其他</option> </select>
+          </div><input type="text" id="batch-custom-1355" placeholder="請輸入其他事故名稱" class="hidden w-full p-2 border-2 border-indigo-300 rounded-lg text-sm mb-2">
+          <div class="flex gap-2"><button onclick="applyBatchIncident('1355')" class="flex-1 py-2 rounded-lg text-sm font-bold" style="background: linear-gradient(135deg, #4682b4 0%, #36648b 100%); color: #fff8e7;"> ✓ 批次新增 </button> <button onclick="cancelBatchMode('1355')" class="flex-1 py-2 rounded-lg text-sm font-bold" style="background: #e8dcc8; color: #5a4a3a;"> 取消 </button>
+          </div>
+         </div>
+         <div id="incident-list-1355" class="space-y-2"></div>
+         <div class="flex gap-2 mt-2"><button onclick="addIncident('1355')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all border-2 border-dashed" style="background: #fff8e7; color: #cd5c5c; border-color: #cd5c5c;"> ＋ 新增事故人員 </button> <button onclick="copyIncidents('0740', '1355')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: linear-gradient(135deg, #8b7355 0%, #6b5744 100%); color: #fff8e7; box-shadow: 0 2px 8px rgba(139, 115, 85, 0.3);">同上</button>
+         </div>
+        </div><!-- 休假人員 -->
+        <div class="mb-4">
+         <h3 class="text-base font-bold text-slate-800 mb-2">🏖️ 休假</h3>
+         <div id="leave-1355" class="grid grid-cols-4 gap-2 mb-2"></div>
+         <div class="flex gap-2"><button onclick="selectAll('1355', 'leave')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: linear-gradient(135deg, #4682b4 0%, #36648b 100%); color: #fff8e7; box-shadow: 0 2px 8px rgba(70, 130, 180, 0.3);">全選</button> <button onclick="clearAll('1355', 'leave')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: #e8dcc8; color: #5a4a3a; border: 2px solid #c9b89a; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">清除</button> <button onclick="copyFromPrevious('0740', '1355', 'leave')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: linear-gradient(135deg, #8b7355 0%, #6b5744 100%); color: #fff8e7; box-shadow: 0 2px 8px rgba(139, 115, 85, 0.3);">同上</button>
+         </div>
+        </div><!-- 統計 -->
+        <div class="bg-slate-50 rounded-lg p-3">
+         <p class="text-sm font-semibold text-slate-700">📊 應到����<span id="stat-total-1355">26</span> 實到：<span id="stat-present-1355">0</span> 事故：<span id="stat-incident-1355">0</span></p>
+        </div>
+       </section>
+      </div>
+     </div>
+    </div><!-- 排值星 -->
+    <section class="bg-white rounded-xl shadow-md p-3 mb-3 mt-4 md:max-w-2xl md:mx-auto">
+     <h2 class="text-lg font-bold text-slate-800 mb-3">⭐ 排值星</h2>
      <div class="space-y-3">
-      <div class="flex items-center gap-2"><span class="w-16 text-sm font-bold text-slate-700">0620</span> <select id="duty-0620" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="updateDeputyOptions('0620')"> <option value="">選擇人員</option> </select> <span class="text-sm font-medium text-slate-600">副：</span> <select id="deputy-0620" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white"> <option value="">選擇人員</option> </select>
+      <div class="flex items-center gap-2"><span class="w-16 text-sm font-bold text-slate-700">0620</span> <select id="duty-0620" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="updateDeputyOptions('0620'); saveData()"> <option value="">選擇人員</option> </select> <span class="text-sm font-medium text-slate-600">副：</span> <select id="deputy-0620" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="saveData()"> <option value="">選擇人員</option> </select>
       </div>
-      <div class="flex items-center gap-2"><span class="w-16 text-sm font-bold text-slate-700">0740</span> <select id="duty-0740" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="updateDeputyOptions('0740')"> <option value="">選擇人員</option> </select> <span class="text-sm font-medium text-slate-600">副：</span> <select id="deputy-0740" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white"> <option value="">選擇人員</option> </select>
+      <div class="flex items-center gap-2"><span class="w-16 text-sm font-bold text-slate-700">0740</span> <select id="duty-0740" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="updateDeputyOptions('0740'); saveData()"> <option value="">選擇人員</option> </select> <span class="text-sm font-medium text-slate-600">副：</span> <select id="deputy-0740" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="saveData()"> <option value="">選擇人員</option> </select>
       </div>
-      <div class="flex items-center gap-2"><span class="w-16 text-sm font-bold text-slate-700">1355</span> <select id="duty-1355" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="updateDeputyOptions('1355')"> <option value="">選擇人員</option> </select> <span class="text-sm font-medium text-slate-600">副：</span> <select id="deputy-1355" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white"> <option value="">選擇人員</option> </select>
+      <div class="flex items-center gap-2"><span class="w-16 text-sm font-bold text-slate-700">1355</span> <select id="duty-1355" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="updateDeputyOptions('1355'); saveData()"> <option value="">選擇人員</option> </select> <span class="text-sm font-medium text-slate-600">副：</span> <select id="deputy-1355" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="saveData()"> <option value="">選擇人員</option> </select>
       </div>
      </div>
-    </section><!-- 生成文案預覽 -->
-    <section class="bg-white rounded-xl shadow-md p-4 mb-4">
+    </section><!-- 生成文案區域 -->
+    <section class="bg-white rounded-xl shadow-md p-3 mb-3 md:max-w-2xl md:mx-auto">
      <h2 class="text-lg font-bold text-slate-800 mb-3 flex items-center gap-2">📝 文案預覽</h2>
-     <div id="report-preview" class="bg-slate-50 p-4 rounded-lg text-sm whitespace-pre-wrap font-mono border-2 border-slate-200 min-h-32">
+     <div id="report-preview" class="bg-slate-50 p-3 rounded-lg text-sm whitespace-pre-wrap font-mono border-2 border-slate-200 min-h-32">
       點擊下方「產生文案」按鈕...
      </div>
     </section>
    </main><!-- 底部按鈕 -->
-   <footer class="fixed bottom-0 left-0 right-0 py-4 px-4" style="background: linear-gradient(to top, #2c1810 0%, #3d2517 100%); border-top: 3px solid #8b3a3a; box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.4);">
-    <div class="max-w-2xl mx-auto flex gap-3"><button onclick="generateReport()" class="flex-1 py-4 rounded-xl font-black text-lg active:scale-95 transition-all" style="background: linear-gradient(135deg, #4682b4 0%, #36648b 100%); color: #fff8e7; box-shadow: 0 4px 12px rgba(70, 130, 180, 0.4);"> 🔄 產生文案 </button> <button onclick="copyReport()" class="flex-1 py-4 rounded-xl font-black text-lg active:scale-95 transition-all" style="background: linear-gradient(135deg, #cd5c5c 0%, #a94442 100%); color: #fff8e7; box-shadow: 0 4px 12px rgba(205, 92, 92, 0.4);"> 📋 一鍵複製 </button>
+   <footer class="fixed bottom-0 left-0 right-0 py-3 px-3" style="background: linear-gradient(to top, #2c1810 0%, #3d2517 100%); border-top: 3px solid #8b3a3a; box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.4);">
+    <div class="md:max-w-2xl md:mx-auto flex gap-3"><button onclick="generateReport()" class="flex-1 py-4 md:py-4 rounded-xl font-black text-base md:text-lg active:scale-95 transition-all touch-manipulation" style="background: linear-gradient(135deg, #4682b4 0%, #36648b 100%); color: #fff8e7; box-shadow: 0 4px 12px rgba(70, 130, 180, 0.4); min-height: 56px;"> 🚀 產生文案 </button> <button onclick="copyReport()" class="flex-1 py-4 md:py-4 rounded-xl font-black text-base md:text-lg active:scale-95 transition-all touch-manipulation" style="background: linear-gradient(135deg, #cd5c5c 0%, #a94442 100%); color: #fff8e7; box-shadow: 0 4px 12px rgba(205, 92, 92, 0.4); min-height: 56px;"> 📋 一鍵複製 </button>
     </div>
    </footer><!-- Toast 通知 -->
    <div id="toast-container" class="fixed bottom-24 left-4 right-4 flex justify-center pointer-events-none z-50">
+   </div><!-- 滑動指示器���手機顯示） -->
+   <div id="scroll-indicator" class="scroll-indicator">
+    <div class="scroll-indicator-dot active"></div>
+    <div class="scroll-indicator-dot"></div>
+    <div class="scroll-indicator-dot"></div>
    </div>
   </div>
   <script>
+    // iPhone 鍵盤音效生成器 - 升級版
+    const SoundEffects = {
+      audioContext: null,
+      
+      init() {
+        if (!this.audioContext) {
+          this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+      },
+      
+      // 生成微幅隨機變化值，避免重複疲勞
+      getVariation(base, range) {
+        return base * (1 + (Math.random() - 0.5) * range);
+      },
+      
+      playClick() {
+        this.init();
+        const ctx = this.audioContext;
+        const now = ctx.currentTime;
+        
+        const oscillator = ctx.createOscillator();
+        const gainNode = ctx.createGain();
+        
+        // 音高微幅隨機變化 ±8%，保持操作節奏感
+        const startFreq = this.getVariation(1500, 0.16);
+        const endFreq = this.getVariation(800, 0.16);
+        
+        // 音量微幅隨機變化 ±15%
+        const volume = this.getVariation(0.12, 0.3);
+        
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(startFreq, now);
+        oscillator.frequency.exponentialRampToValueAtTime(endFreq, now + 0.01);
+        
+        gainNode.gain.setValueAtTime(volume, now);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.01);
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(ctx.destination);
+        
+        oscillator.start(now);
+        oscillator.stop(now + 0.01);
+      },
+      
+      playSuccess() {
+        this.init();
+        const ctx = this.audioContext;
+        const now = ctx.currentTime;
+        
+        const oscillator = ctx.createOscillator();
+        const gainNode = ctx.createGain();
+        
+        // 音高微幅隨機變化 ±5%
+        const freq1 = this.getVariation(1800, 0.1);
+        const freq2 = this.getVariation(2200, 0.1);
+        
+        // 音量微幅隨機變化 ±12%
+        const volume = this.getVariation(0.1, 0.24);
+        
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(freq1, now);
+        oscillator.frequency.setValueAtTime(freq2, now + 0.05);
+        
+        gainNode.gain.setValueAtTime(volume, now);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(ctx.destination);
+        
+        oscillator.start(now);
+        oscillator.stop(now + 0.1);
+      },
+      
+      playDelete() {
+        this.init();
+        const ctx = this.audioContext;
+        const now = ctx.currentTime;
+        
+        const oscillator = ctx.createOscillator();
+        const gainNode = ctx.createGain();
+        
+        // 音高微幅隨機變化 ±10%
+        const startFreq = this.getVariation(400, 0.2);
+        const endFreq = this.getVariation(200, 0.2);
+        
+        // 音量微幅隨機變化 ±18%
+        const volume = this.getVariation(0.15, 0.36);
+        
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(startFreq, now);
+        oscillator.frequency.exponentialRampToValueAtTime(endFreq, now + 0.015);
+        
+        gainNode.gain.setValueAtTime(volume, now);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.015);
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(ctx.destination);
+        
+        oscillator.start(now);
+        oscillator.stop(now + 0.015);
+      }
+    };
+    
+    // 全域按鈕音效處理
+    let lastSoundTime = 0;
+    const soundThrottle = 50; // 50ms 內不重複播放
+    
+    function playSoundThrottled() {
+      const now = Date.now();
+      if (now - lastSoundTime > soundThrottle) {
+        lastSoundTime = now;
+        SoundEffects.playClick();
+      }
+    }
+    
+    function playDeleteSoundThrottled() {
+      const now = Date.now();
+      if (now - lastSoundTime > soundThrottle) {
+        lastSoundTime = now;
+        SoundEffects.playDelete();
+      }
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      // 為所有按鈕添加音效（只監聽 click 事件）
+      document.addEventListener('click', (e) => {
+        if (e.target.tagName === 'BUTTON' && !e.target.disabled) {
+          // 檢查是否為刪除按鈕（包含✕符號）或清除按鈕
+          const buttonText = e.target.textContent.trim();
+          if (buttonText === '✕' || buttonText === '清除' || buttonText === '刪除') {
+            playDeleteSoundThrottled();
+          } else {
+            playSoundThrottled();
+          }
+        }
+      });
+      
+      // 為 checkbox label 添加音效
+      document.addEventListener('change', (e) => {
+        if (e.target.type === 'checkbox' && e.target.classList.contains('checkbox-btn')) {
+          playSoundThrottled();
+        }
+        // 為下拉選單添加音效
+        if (e.target.tagName === 'SELECT') {
+          playSoundThrottled();
+        }
+        // 為日期選擇器添加音效
+        if (e.target.type === 'date') {
+          playSoundThrottled();
+        }
+      });
+      
+      // 為輸入框 focus 添加輕微音效
+      document.addEventListener('focus', (e) => {
+        if (e.target.tagName === 'INPUT' && e.target.type === 'text') {
+          playSoundThrottled();
+        }
+      }, true);
+    });
+    
     // 人員名單
     const personnel = [
       '排長', '華姐', '家賢', '鈺霖', '岳得', '延鴻', '文郁', '怡佩', '紘旻', '永澤',
@@ -192,8 +843,12 @@
       '士閎', '逸宸', '治學', '紘銘', '曜誠', '冠妤', '曹凱', '營勤', '榆凱'
     ];
 
-    // 事故類型
-    const incidentTypes = ['飯班', '值星', 'FOD', '夜機', '值班', '衛哨', '領裝', '作業', '預保', '割草班', '公假', '查哨', '受訓', '支援', '其他'];
+    // 事故類型（依時段）
+    const incidentTypes = {
+      '0620': ['外宿', '飯班', '值星', '夜機', '值班', '衛哨', '領裝', '作業', '預保', '割草班', '公假', '查哨', '受訓', '支援', '其他'],
+      '0740': ['飯班', '值星', 'FOD', '夜機', '值班', '衛哨', '領裝', '作業', '預保', '割草班', '公假', '查哨', '受訓', '支援', '其他'],
+      '1355': ['飯班', '值星', '值班', '衛哨', '領裝', '作業', '預保', '割草班', '公假', '查哨', '受訓', '支援', '其他']
+    };
 
     // 安官時段
     const guardOfficerShifts = ['06-08', '08-10', '10-12', '12-14', '14-16', '16-18', '18-20', '20-22', '22-24', '24-02', '02-04', '04-06'];
@@ -203,8 +858,377 @@
 
     // 追蹤事故項目
     let incidentCounter = { '0620': 0, '0740': 0, '1355': 0 };
+    
+    // 批次選擇狀態
+    let batchMode = { '0620': false, '0740': false, '1355': false };
+    
+    // 防抖動優化 - 統計更新
+    let updateTimers = {};
+    function debouncedUpdate(time) {
+      if (updateTimers[time]) {
+        clearTimeout(updateTimers[time]);
+      }
+      
+      updateTimers[time] = setTimeout(() => {
+        updateStats();
+        updateIncidentPersonnelOptions(time);
+        saveData();
+      }, 50); // 50ms 延遲，提供即時回饋感
+    }
 
-    // 初始化
+    // localStorage 相關函數
+    function saveData() {
+      const currentDate = document.getElementById('report-date').value;
+      if (!currentDate) return;
+
+      const data = {
+        date: currentDate,
+        leave: {
+          '0620': getSelectedPersonnel('leave-0620'),
+          '0740': getSelectedPersonnel('leave-0740'),
+          '1355': getSelectedPersonnel('leave-1355')
+        },
+        incidents: {
+          '0620': getIncidentInfo('0620'),
+          '0740': getIncidentInfo('0740'),
+          '1355': getIncidentInfo('1355')
+        },
+        duty: {
+          '0620': {
+            duty: document.getElementById('duty-0620').value,
+            deputy: document.getElementById('deputy-0620').value
+          },
+          '0740': {
+            duty: document.getElementById('duty-0740').value,
+            deputy: document.getElementById('deputy-0740').value
+          },
+          '1355': {
+            duty: document.getElementById('duty-1355').value,
+            deputy: document.getElementById('deputy-1355').value
+          }
+        },
+        timestamp: new Date().toISOString()
+      };
+
+      try {
+        localStorage.setItem(`duty_report_${currentDate}`, JSON.stringify(data));
+        updateHistoryBadge();
+      } catch (e) {
+        console.error('儲存失敗:', e);
+        showToast('⚠️ 儲存失敗，資料可能過大', 'warning');
+      }
+    }
+
+    function loadDataForDate() {
+      const currentDate = document.getElementById('report-date').value;
+      if (!currentDate) return;
+
+      const savedData = localStorage.getItem(`duty_report_${currentDate}`);
+      
+      if (savedData) {
+        try {
+          const data = JSON.parse(savedData);
+          
+          // 載入休假
+          ['0620', '0740', '1355'].forEach(time => {
+            clearAll(time, 'leave');
+            if (data.leave && data.leave[time]) {
+              data.leave[time].forEach(person => {
+                const index = personnel.indexOf(person);
+                if (index !== -1) {
+                  const checkbox = document.getElementById(`leave-${time}-${index}`);
+                  if (checkbox) checkbox.checked = true;
+                }
+              });
+            }
+          });
+
+          // 載入事故
+          ['0620', '0740', '1355'].forEach(time => {
+            // 清空現有事故
+            document.querySelectorAll(`[id^="incident-${time}-"]`).forEach(el => el.remove());
+            
+            if (data.incidents && data.incidents[time]) {
+              data.incidents[time].forEach(incident => {
+                addIncidentWithData(time, incident);
+              });
+            }
+          });
+
+          // 載入排值星
+          if (data.duty) {
+            ['0620', '0740', '1355'].forEach(time => {
+              if (data.duty[time]) {
+                const dutySelect = document.getElementById(`duty-${time}`);
+                const deputySelect = document.getElementById(`deputy-${time}`);
+                if (dutySelect) dutySelect.value = data.duty[time].duty || '';
+                if (data.duty[time].duty) updateDeputyOptions(time);
+                if (deputySelect) deputySelect.value = data.duty[time].deputy || '';
+              }
+            });
+          }
+
+          updateStats();
+          updateHistoryBadge();
+          showToast('✅ 已載入歷史資料', 'success');
+        } catch (e) {
+          console.error('載入失敗:', e);
+          showToast('⚠️ 載入資料失敗', 'warning');
+        }
+      } else {
+        // 清空所有選擇
+        ['0620', '0740', '1355'].forEach(time => {
+          clearAll(time, 'leave');
+          document.querySelectorAll(`[id^="incident-${time}-"]`).forEach(el => el.remove());
+          document.getElementById(`duty-${time}`).value = '';
+          document.getElementById(`deputy-${time}`).value = '';
+        });
+        updateStats();
+        updateHistoryBadge();
+      }
+    }
+
+    function addIncidentWithData(time, incidentData) {
+      const container = document.getElementById(`incident-list-${time}`);
+      const id = incidentCounter[time]++;
+      const leavePersonnel = getSelectedPersonnel(`leave-${time}`);
+      
+      // 取得該時段所有已選事故人員
+      const selectedIncidentPersonnel = [];
+      document.querySelectorAll(`[id^="incident-person-${time}-"]`).forEach(select => {
+        if (select.value) {
+          selectedIncidentPersonnel.push(select.value);
+        }
+      });
+      
+      const availablePersonnel = personnel.filter(p => 
+        !leavePersonnel.includes(p) && !selectedIncidentPersonnel.includes(p)
+      );
+      
+      const div = document.createElement('div');
+      div.id = `incident-${time}-${id}`;
+      div.className = 'incident-row';
+      
+      // 解析事故類型
+      let type = incidentData.type;
+      let guardOfficer = '';
+      let deputyGuard = '';
+      let custom = '';
+      
+      if (type.includes('衛哨')) {
+        type = '衛哨';
+        const match = incidentData.type.match(/安官(\d{2}-\d{2})/);
+        if (match) guardOfficer = match[1];
+        const match2 = incidentData.type.match(/副哨(\d{2}-\d{2})/);
+        if (match2) deputyGuard = match2[1];
+      } else if (!incidentTypes[time].includes(type)) {
+        custom = type;
+        type = '其他';
+      }
+      
+      div.innerHTML = `
+        <select id="incident-person-${time}-${id}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="updateLeaveAvailability('${time}'); updateIncidentPersonnelOptions('${time}'); saveData()">
+          <option value="">選擇人員</option>
+          ${availablePersonnel.map(p => `<option value="${p}" ${p === incidentData.person ? 'selected' : ''}>${p}</option>`).join('')}
+        </select>
+        <select id="incident-type-${time}-${id}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="toggleCustomInput('${time}', ${id}); saveData()">
+          ${incidentTypes[time].map(t => `<option value="${t}" ${t === type ? 'selected' : ''}>${t}</option>`).join('')}
+        </select>
+        <select id="incident-guard-officer-${time}-${id}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${type === '衛哨' ? '' : 'hidden'}" onchange="saveData()">
+          <option value="">安官</option>
+          ${guardOfficerShifts.map(s => `<option value="${s}" ${s === guardOfficer ? 'selected' : ''}>${s}</option>`).join('')}
+        </select>
+        <select id="incident-deputy-guard-${time}-${id}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${type === '衛哨' ? '' : 'hidden'}" onchange="saveData()">
+          <option value="">副哨</option>
+          ${deputyGuardShifts.map(s => `<option value="${s}" ${s === deputyGuard ? 'selected' : ''}>${s}</option>`).join('')}
+        </select>
+        <input type="text" id="incident-custom-${time}-${id}" placeholder="其他事故" value="${custom}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm ${type === '��他' ? '' : 'hidden'}" onchange="saveData()">
+        <button onclick="duplicateIncident('${time}', ${id})" class="px-3 py-2 bg-green-100 text-green-600 rounded-lg text-xs font-bold active:bg-green-200" title="複製此事故">＋</button>
+        <button onclick="removeIncident('${time}', ${id})" class="px-3 py-2 bg-red-100 text-red-600 rounded-lg text-xs font-bold active:bg-red-200">✕</button>
+      `;
+      container.appendChild(div);
+    }
+
+    function updateHistoryBadge() {
+      const currentDate = document.getElementById('report-date').value;
+      if (!currentDate) return;
+      
+      const savedData = localStorage.getItem(`duty_report_${currentDate}`);
+      const dateInput = document.getElementById('report-date');
+      
+      // 移除舊的徽章
+      const oldBadge = dateInput.parentElement.querySelector('.history-badge');
+      if (oldBadge) oldBadge.remove();
+      
+      // 如果有儲存資料，添加徽章
+      if (savedData) {
+        const badge = document.createElement('span');
+        badge.className = 'history-badge';
+        badge.textContent = '已存';
+        dateInput.parentElement.appendChild(badge);
+      }
+    }
+
+    function toggleHistoryPanel() {
+      const panel = document.getElementById('history-panel');
+      const isHidden = panel.classList.contains('hidden');
+      
+      if (isHidden) {
+        loadHistoryList();
+        panel.classList.remove('hidden');
+      } else {
+        panel.classList.add('hidden');
+      }
+    }
+
+    function loadHistoryList() {
+      const historyList = document.getElementById('history-list');
+      const records = [];
+      
+      // 收集所有儲存的記錄
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('duty_report_')) {
+          try {
+            const data = JSON.parse(localStorage.getItem(key));
+            records.push(data);
+          } catch (e) {
+            console.error('解析記錄失敗:', e);
+          }
+        }
+      }
+      
+      // 按日期排���（最���的在上）
+      records.sort((a, b) => new Date(b.date) - new Date(a.date));
+      
+      if (records.length === 0) {
+        historyList.innerHTML = '<p class="text-center text-slate-500 py-4">尚無歷史紀錄</p>';
+        return;
+      }
+      
+      historyList.innerHTML = records.map(record => {
+        const date = new Date(record.date + 'T00:00:00');
+        const days = ['日', '一', '二', '三', '四', '五', '六'];
+        const displayDate = `${date.getMonth() + 1}/${date.getDate()}（${days[date.getDay()]}）`;
+        const isCurrent = record.date === document.getElementById('report-date').value;
+        
+        return `
+          <div class="flex items-center gap-2 p-3 bg-slate-50 rounded-lg hover:bg-slate-100 transition-all ${isCurrent ? 'ring-2 ring-indigo-400' : ''}">
+            <div class="flex-1">
+              <p class="font-bold text-slate-800">${displayDate}</p>
+              <p class="text-xs text-slate-500">更新：${new Date(record.timestamp).toLocaleString('zh-TW', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</p>
+            </div>
+            <button onclick="loadHistoryRecord('${record.date}')" class="px-3 py-1 bg-indigo-500 text-white rounded-lg text-sm font-bold hover:bg-indigo-600 transition-all">
+              載入
+            </button>
+            <button onclick="deleteHistoryRecord('${record.date}')" class="px-3 py-1 bg-red-500 text-white rounded-lg text-sm font-bold hover:bg-red-600 transition-all">
+              刪除
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function loadHistoryRecord(date) {
+      document.getElementById('report-date').value = date;
+      loadDataForDate();
+      toggleHistoryPanel();
+      showToast(`✅ 已載入 ${date} 的紀錄`, 'success');
+    }
+
+    function deleteHistoryRecord(date) {
+      const container = document.createElement('div');
+      container.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+      container.innerHTML = `
+        <div class="bg-white rounded-xl p-6 max-w-sm mx-4 shadow-2xl">
+          <h3 class="text-lg font-bold text-slate-800 mb-3">確認刪除</h3>
+          <p class="text-slate-600 mb-4">確定要刪除 ${date} 的紀錄嗎？</p>
+          <div class="flex gap-2">
+            <button onclick="this.closest('.fixed').remove()" class="flex-1 py-2 px-4 bg-slate-200 text-slate-700 rounded-lg font-bold hover:bg-slate-300">
+              取消
+            </button>
+            <button onclick="confirmDelete('${date}'); this.closest('.fixed').remove()" class="flex-1 py-2 px-4 bg-red-500 text-white rounded-lg font-bold hover:bg-red-600">
+              確定刪除
+            </button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(container);
+    }
+
+    function confirmDelete(date) {
+      playDeleteSoundThrottled();
+      localStorage.removeItem(`duty_report_${date}`);
+      loadHistoryList();
+      showToast('✅ 已刪除紀錄', 'success');
+      
+      // 如果刪除的是當前日期，清空畫面
+      if (date === document.getElementById('report-date').value) {
+        loadDataForDate();
+      }
+    }
+
+    function exportData() {
+      const allData = {};
+      
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('duty_report_')) {
+          allData[key] = localStorage.getItem(key);
+        }
+      }
+      
+      if (Object.keys(allData).length === 0) {
+        showToast('⚠️ 沒有資料可匯出', 'warning');
+        return;
+      }
+      
+      const dataStr = JSON.stringify(allData, null, 2);
+      const blob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `排值星備份_${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      showToast('✅ 備份檔案已下載', 'success');
+    }
+
+    function importData(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const importedData = JSON.parse(e.target.result);
+          
+          let count = 0;
+          Object.keys(importedData).forEach(key => {
+            if (key.startsWith('duty_report_')) {
+              localStorage.setItem(key, importedData[key]);
+              count++;
+            }
+          });
+          
+          showToast(`✅ 已匯入 ${count} 筆紀錄`, 'success');
+          loadHistoryList();
+          loadDataForDate();
+        } catch (error) {
+          console.error('匯入失敗:', error);
+          showToast('❌ 匯入失敗，檔案格式錯誤', 'error');
+        }
+      };
+      reader.readAsText(file);
+      
+      // 清除 input，允許重複匯入同一檔案
+      event.target.value = '';
+    }
+
+    // 初��化
     function init() {
       setTodayDate();
       
@@ -217,6 +1241,38 @@
       ['0620', '0740', '1355'].forEach(time => {
         renderDutyOptions(`duty-${time}`, false);
         renderDutyOptions(`deputy-${time}`, false);
+      });
+
+      // 載入當前日期的資料
+      loadDataForDate();
+      
+      // 初始化滑動指示器
+      initScrollIndicator();
+    }
+    
+    // 滑動指示器
+    function initScrollIndicator() {
+      const scrollContainer = document.querySelector('.overflow-x-auto');
+      if (!scrollContainer) return;
+      
+      const dots = document.querySelectorAll('.scroll-indicator-dot');
+      
+      scrollContainer.addEventListener('scroll', () => {
+        const scrollLeft = scrollContainer.scrollLeft;
+        const cardWidth = scrollContainer.querySelector('.time-section')?.offsetWidth || 0;
+        const gap = 16; // Tailwind gap-4 = 16px
+        const totalWidth = cardWidth + gap;
+        
+        let activeIndex = Math.round(scrollLeft / totalWidth);
+        activeIndex = Math.max(0, Math.min(2, activeIndex));
+        
+        dots.forEach((dot, index) => {
+          if (index === activeIndex) {
+            dot.classList.add('active');
+          } else {
+            dot.classList.remove('active');
+          }
+        });
       });
     }
 
@@ -234,8 +1290,8 @@
       const time = prefix.split('-')[1];
       container.innerHTML = personnel.map((person, index) => `
         <div>
-          <input type="checkbox" id="${prefix}-${index}" class="checkbox-btn" onchange="updateStats(); updateIncidentPersonnelOptions('${time}')">
-          <label for="${prefix}-${index}" class="block py-2 px-2 text-center text-sm font-bold rounded-lg cursor-pointer transition-all active:scale-95" style="border: 2px solid #8b3a3a; background: #fff8e7; color: #5a4a3a;">
+          <input type="checkbox" id="${prefix}-${index}" class="checkbox-btn" onchange="debouncedUpdate('${time}')">
+          <label for="${prefix}-${index}" class="block py-2 px-2 text-center text-xs font-bold rounded-lg cursor-pointer transition-all active:scale-95" style="border: 2px solid #8b3a3a; background: #fff8e7; color: #5a4a3a;">
             ${person}
           </label>
         </div>
@@ -254,9 +1310,16 @@
           const time = timeMatch[1];
           const leave = getSelectedPersonnel(`leave-${time}`);
           const incidents = getIncidentInfo(time);
-          const excludedPersonnel = incidents
-            .filter(inc => !inc.type.includes('值班'))
-            .map(inc => inc.person);
+          
+          // 0740 特殊處理：值班人員可以當值星/副值星
+          let excludedPersonnel;
+          if (time === '0740') {
+            excludedPersonnel = incidents
+              .filter(inc => inc.type !== '值班')
+              .map(inc => inc.person);
+          } else {
+            excludedPersonnel = incidents.map(inc => inc.person);
+          }
           
           availablePersonnel = personnel.filter(person => 
             !leave.includes(person) && !excludedPersonnel.includes(person)
@@ -264,8 +1327,13 @@
         }
       }
       
+      const currentValue = select.value;
       select.innerHTML = '<option value="">選擇人員</option>' + 
         availablePersonnel.map(person => `<option value="${person}">${person}</option>`).join('');
+      
+      if (currentValue && availablePersonnel.includes(currentValue)) {
+        select.value = currentValue;
+      }
     }
 
     // 更新副值星選項
@@ -273,11 +1341,19 @@
       const dutySelect = document.getElementById(`duty-${time}`);
       const deputySelect = document.getElementById(`deputy-${time}`);
       const currentDuty = dutySelect.value;
+      const currentDeputy = deputySelect.value;
       const leave = getSelectedPersonnel(`leave-${time}`);
       const incidents = getIncidentInfo(time);
-      const excludedPersonnel = incidents
-        .filter(inc => !inc.type.includes('值班'))
-        .map(inc => inc.person);
+      
+      // 0740 特殊處理：值班人員可以當值星/副值星
+      let excludedPersonnel;
+      if (time === '0740') {
+        excludedPersonnel = incidents
+          .filter(inc => inc.type !== '值班')
+          .map(inc => inc.person);
+      } else {
+        excludedPersonnel = incidents.map(inc => inc.person);
+      }
 
       deputySelect.innerHTML = '<option value="">選擇人員</option>' + 
         personnel
@@ -288,6 +1364,10 @@
           )
           .map(person => `<option value="${person}">${person}</option>`)
           .join('');
+      
+      if (currentDeputy && !leave.includes(currentDeputy) && !excludedPersonnel.includes(currentDeputy) && currentDeputy !== currentDuty) {
+        deputySelect.value = currentDeputy;
+      }
     }
 
     // 新增事故人員
@@ -295,30 +1375,41 @@
       const container = document.getElementById(`incident-list-${time}`);
       const id = incidentCounter[time]++;
       const leavePersonnel = getSelectedPersonnel(`leave-${time}`);
-      const availablePersonnel = personnel.filter(p => !leavePersonnel.includes(p));
+      
+      // 取得該時段所有已選事故人員
+      const selectedIncidentPersonnel = [];
+      document.querySelectorAll(`[id^="incident-person-${time}-"]`).forEach(select => {
+        if (select.value) {
+          selectedIncidentPersonnel.push(select.value);
+        }
+      });
+      
+      const availablePersonnel = personnel.filter(p => 
+        !leavePersonnel.includes(p) && !selectedIncidentPersonnel.includes(p)
+      );
       
       const div = document.createElement('div');
       div.id = `incident-${time}-${id}`;
-      div.className = 'flex gap-2 items-center';
+      div.className = 'incident-row';
       div.innerHTML = `
-        <select id="incident-person-${time}-${id}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="updateLeaveAvailability('${time}')">
+        <select id="incident-person-${time}-${id}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="updateLeaveAvailability('${time}'); updateIncidentPersonnelOptions('${time}'); saveData()">
           <option value="">選擇人員</option>
           ${availablePersonnel.map(p => `<option value="${p}">${p}</option>`).join('')}
         </select>
-        <select id="incident-type-${time}-${id}" class="w-28 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="toggleCustomInput('${time}', ${id})">
-          ${incidentTypes.map(t => `<option value="${t}">${t}</option>`).join('')}
+        <select id="incident-type-${time}-${id}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="toggleCustomInput('${time}', ${id}); saveData()">
+          ${incidentTypes[time].map(t => `<option value="${t}">${t}</option>`).join('')}
         </select>
-        <select id="incident-guard-officer-${time}-${id}" class="w-24 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white hidden">
+        <select id="incident-guard-officer-${time}-${id}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white hidden" onchange="saveData()">
           <option value="">安官</option>
           ${guardOfficerShifts.map(s => `<option value="${s}">${s}</option>`).join('')}
         </select>
-        <select id="incident-deputy-guard-${time}-${id}" class="w-24 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white hidden">
+        <select id="incident-deputy-guard-${time}-${id}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white hidden" onchange="saveData()">
           <option value="">副哨</option>
           ${deputyGuardShifts.map(s => `<option value="${s}">${s}</option>`).join('')}
         </select>
-        <input type="text" id="incident-custom-${time}-${id}" placeholder="其他事故" class="w-32 p-2 border-2 border-slate-300 rounded-lg text-sm hidden">
-        <button onclick="duplicateIncident('${time}', ${id})" class="p-2 bg-green-100 text-green-600 rounded-lg font-bold text-sm active:bg-green-200" title="複製此事故">＋</button>
-        <button onclick="removeIncident('${time}', ${id})" class="p-2 bg-red-100 text-red-600 rounded-lg font-bold text-sm active:bg-red-200">✕</button>
+        <input type="text" id="incident-custom-${time}-${id}" placeholder="其他事故" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm hidden" onchange="saveData()">
+        <button onclick="duplicateIncident('${time}', ${id})" class="px-3 py-2 bg-green-100 text-green-600 rounded-lg text-xs font-bold active:bg-green-200" title="複製此事故">＋</button>
+        <button onclick="removeIncident('${time}', ${id})" class="px-3 py-2 bg-red-100 text-red-600 rounded-lg text-xs font-bold active:bg-red-200">✕</button>
       `;
       container.appendChild(div);
       updateStats();
@@ -356,9 +1447,21 @@
     function updateIncidentPersonnelOptions(time) {
       const leavePersonnel = getSelectedPersonnel(`leave-${time}`);
       
+      // 取得該時段所有已選事故人員
+      const selectedIncidentPersonnel = [];
+      document.querySelectorAll(`[id^="incident-person-${time}-"]`).forEach(select => {
+        if (select.value) {
+          selectedIncidentPersonnel.push(select.value);
+        }
+      });
+      
       document.querySelectorAll(`[id^="incident-person-${time}-"]`).forEach(select => {
         const currentValue = select.value;
-        const availablePersonnel = personnel.filter(p => !leavePersonnel.includes(p));
+        // 排除休假和其他已選事故人員（但保留自己當前選擇）
+        const availablePersonnel = personnel.filter(p => 
+          !leavePersonnel.includes(p) && 
+          (!selectedIncidentPersonnel.includes(p) || p === currentValue)
+        );
         
         select.innerHTML = '<option value="">選擇人員</option>' + 
           availablePersonnel.map(p => `<option value="${p}" ${p === currentValue ? 'selected' : ''}>${p}</option>`).join('');
@@ -367,53 +1470,68 @@
           select.value = '';
         }
       });
+      
+      updateStats();
     }
 
-    // 複製事故人員
+    // 複製事故（只複製事故類型，不複製人員）
     function duplicateIncident(time, id) {
-      const person = document.getElementById(`incident-person-${time}-${id}`)?.value;
       const type = document.getElementById(`incident-type-${time}-${id}`)?.value;
       const custom = document.getElementById(`incident-custom-${time}-${id}`)?.value;
       const guardOfficer = document.getElementById(`incident-guard-officer-${time}-${id}`)?.value;
       const deputyGuard = document.getElementById(`incident-deputy-guard-${time}-${id}`)?.value;
       
-      if (!person || !type) {
-        showToast('⚠️ 請先選擇人員和事故類型', 'warning');
+      if (!type) {
+        showToast('⚠️ 請先選擇事故類型', 'warning');
         return;
       }
       
       const container = document.getElementById(`incident-list-${time}`);
       const newId = incidentCounter[time]++;
       const leavePersonnel = getSelectedPersonnel(`leave-${time}`);
-      const availablePersonnel = personnel.filter(p => !leavePersonnel.includes(p));
+      
+      // 取得該時段所有已選事故人員
+      const selectedIncidentPersonnel = [];
+      document.querySelectorAll(`[id^="incident-person-${time}-"]`).forEach(select => {
+        if (select.value) {
+          selectedIncidentPersonnel.push(select.value);
+        }
+      });
+      
+      // 排除休假和已選事故人��
+      const availablePersonnel = personnel.filter(p => 
+        !leavePersonnel.includes(p) && !selectedIncidentPersonnel.includes(p)
+      );
       
       const div = document.createElement('div');
       div.id = `incident-${time}-${newId}`;
-      div.className = 'flex gap-2 items-center';
+      div.className = 'incident-row';
       div.innerHTML = `
-        <select id="incident-person-${time}-${newId}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="updateLeaveAvailability('${time}')">
+        <select id="incident-person-${time}-${newId}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="updateLeaveAvailability('${time}'); updateIncidentPersonnelOptions('${time}'); saveData()">
           <option value="">選擇人員</option>
-          ${availablePersonnel.map(p => `<option value="${p}" ${p === person ? 'selected' : ''}>${p}</option>`).join('')}
+          ${availablePersonnel.map(p => `<option value="${p}">${p}</option>`).join('')}
         </select>
-        <select id="incident-type-${time}-${newId}" class="w-28 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="toggleCustomInput('${time}', ${newId})">
-          ${incidentTypes.map(t => `<option value="${t}" ${t === type ? 'selected' : ''}>${t}</option>`).join('')}
+        <select id="incident-type-${time}-${newId}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="toggleCustomInput('${time}', ${newId}); saveData()">
+          ${incidentTypes[time].map(t => `<option value="${t}" ${t === type ? 'selected' : ''}>${t}</option>`).join('')}
         </select>
-        <select id="incident-guard-officer-${time}-${newId}" class="w-24 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${type === '衛哨' ? '' : 'hidden'}">
+        <select id="incident-guard-officer-${time}-${newId}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${type === '衛哨' ? '' : 'hidden'}" onchange="saveData()">
           <option value="">安官</option>
           ${guardOfficerShifts.map(s => `<option value="${s}" ${s === guardOfficer ? 'selected' : ''}>${s}</option>`).join('')}
         </select>
-        <select id="incident-deputy-guard-${time}-${newId}" class="w-24 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${type === '衛哨' ? '' : 'hidden'}">
+        <select id="incident-deputy-guard-${time}-${newId}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${type === '衛哨' ? '' : 'hidden'}" onchange="saveData()">
           <option value="">副哨</option>
           ${deputyGuardShifts.map(s => `<option value="${s}" ${s === deputyGuard ? 'selected' : ''}>${s}</option>`).join('')}
         </select>
-        <input type="text" id="incident-custom-${time}-${newId}" placeholder="其他事故" value="${custom || ''}" class="w-32 p-2 border-2 border-slate-300 rounded-lg text-sm ${type === '其他' ? '' : 'hidden'}">
-        <button onclick="duplicateIncident('${time}', ${newId})" class="p-2 bg-green-100 text-green-600 rounded-lg font-bold text-sm active:bg-green-200" title="複製此事故">＋</button>
-        <button onclick="removeIncident('${time}', ${newId})" class="p-2 bg-red-100 text-red-600 rounded-lg font-bold text-sm active:bg-red-200">✕</button>
+        <input type="text" id="incident-custom-${time}-${newId}" placeholder="其他事故" value="${custom || ''}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm ${type === '其��' ? '' : 'hidden'}" onchange="saveData()">
+        <button onclick="duplicateIncident('${time}', ${newId})" class="px-3 py-2 bg-green-100 text-green-600 rounded-lg text-xs font-bold active:bg-green-200" title="複製此事故">＋</button>
+        <button onclick="removeIncident('${time}', ${newId})" class="px-3 py-2 bg-red-100 text-red-600 rounded-lg text-xs font-bold active:bg-red-200">✕</button>
       `;
       container.appendChild(div);
       updateStats();
       updateLeaveAvailability(time);
-      showToast('✅ 已複製事故', 'success');
+      updateIncidentPersonnelOptions(time);
+      saveData();
+      showToast('✅ 已複製事故類型', 'success');
     }
 
     // 切換自訂輸入框和衛哨時段選單
@@ -423,36 +1541,45 @@
       const guardOfficerSelect = document.getElementById(`incident-guard-officer-${time}-${id}`);
       const deputyGuardSelect = document.getElementById(`incident-deputy-guard-${time}-${id}`);
       
-      if (typeSelect.value === '其他') {
-        customInput.classList.remove('hidden');
-        guardOfficerSelect.classList.add('hidden');
-        deputyGuardSelect.classList.add('hidden');
-      } else if (typeSelect.value === '衛哨') {
-        customInput.classList.add('hidden');
-        customInput.value = '';
-        guardOfficerSelect.classList.remove('hidden');
-        deputyGuardSelect.classList.remove('hidden');
+      if (typeSelect.value === '衛哨') {
+        if (customInput) customInput.classList.add('hidden');
+        if (guardOfficerSelect) guardOfficerSelect.classList.remove('hidden');
+        if (deputyGuardSelect) deputyGuardSelect.classList.remove('hidden');
+        if (customInput) customInput.value = '';
+      } else if (typeSelect.value === '其他') {
+        if (customInput) customInput.classList.remove('hidden');
+        if (guardOfficerSelect) guardOfficerSelect.classList.add('hidden');
+        if (deputyGuardSelect) deputyGuardSelect.classList.add('hidden');
+        if (customInput) customInput.value = '';
+        if (guardOfficerSelect) guardOfficerSelect.value = '';
+        if (deputyGuardSelect) deputyGuardSelect.value = '';
       } else {
-        customInput.classList.add('hidden');
-        customInput.value = '';
-        guardOfficerSelect.classList.add('hidden');
-        deputyGuardSelect.classList.add('hidden');
-        guardOfficerSelect.value = '';
-        deputyGuardSelect.value = '';
+        if (customInput) customInput.classList.add('hidden');
+        if (guardOfficerSelect) guardOfficerSelect.classList.add('hidden');
+        if (deputyGuardSelect) deputyGuardSelect.classList.add('hidden');
+        if (customInput) customInput.value = '';
+        if (guardOfficerSelect) guardOfficerSelect.value = '';
+        if (deputyGuardSelect) deputyGuardSelect.value = '';
       }
     }
 
     // 刪除事故人員
     function removeIncident(time, id) {
+      playDeleteSoundThrottled();
       const element = document.getElementById(`incident-${time}-${id}`);
       if (element) {
-        element.remove();
-        updateStats();
-        updateLeaveAvailability(time);
+        element.classList.add('removing');
+        setTimeout(() => {
+          element.remove();
+          updateStats();
+          updateLeaveAvailability(time);
+          updateIncidentPersonnelOptions(time);
+          saveData();
+        }, 300);
       }
     }
 
-    // 全選
+    // ����
     function selectAll(time, type) {
       personnel.forEach((_, index) => {
         const checkbox = document.getElementById(`${type}-${time}-${index}`);
@@ -461,6 +1588,7 @@
         }
       });
       updateStats();
+      saveData();
     }
 
     // 清除
@@ -470,6 +1598,7 @@
         if (checkbox) checkbox.checked = false;
       });
       updateStats();
+      saveData();
     }
 
     // 複製上一時段的選擇
@@ -483,7 +1612,7 @@
         const toCheckbox = document.getElementById(`${type}-${toTime}-${index}`);
         
         if (fromCheckbox && toCheckbox && !toCheckbox.disabled) {
-          // 如果該人員在目前時段已有事故，則不勾選
+          // 如果該人���在目前時段已有事故，則不勾選
           if (currentIncidentPersonnel.includes(person)) {
             toCheckbox.checked = false;
           } else {
@@ -492,6 +1621,7 @@
         }
       });
       updateStats();
+      saveData();
       showToast('✅ 已複製上一時段', 'success');
     }
 
@@ -515,64 +1645,87 @@
         }
       });
       
+      // 取得目標時段休假人員和已有事故人員
+      const targetLeavePersonnel = getSelectedPersonnel(`leave-${toTime}`);
+      const targetIncidents = getIncidentInfo(toTime);
+      const targetIncidentPersonnel = targetIncidents.map(inc => inc.person);
+      
       sourceIncidents.forEach(incident => {
+        // 檢查該人員是否在��標時段休假或已有事故
+        if (targetLeavePersonnel.includes(incident.person) || targetIncidentPersonnel.includes(incident.person)) {
+          return; // 跳過此人員
+        }
+        
         const container = document.getElementById(`incident-list-${toTime}`);
         const id = incidentCounter[toTime]++;
-        const leavePersonnel = getSelectedPersonnel(`leave-${toTime}`);
-        const availablePersonnel = personnel.filter(p => !leavePersonnel.includes(p));
+        
+        // 取得可用人員（排除休假和已有事故）
+        const selectedIncidentPersonnel = [];
+        document.querySelectorAll(`[id^="incident-person-${toTime}-"]`).forEach(select => {
+          if (select.value) {
+            selectedIncidentPersonnel.push(select.value);
+          }
+        });
+        
+        const availablePersonnel = personnel.filter(p => 
+          !targetLeavePersonnel.includes(p) && !selectedIncidentPersonnel.includes(p)
+        );
         
         const div = document.createElement('div');
         div.id = `incident-${toTime}-${id}`;
-        div.className = 'flex gap-2 items-center';
+        div.className = 'incident-row';
         
-        // 創建選人員下拉選單
+        // 創建人員選單
         const personSelect = document.createElement('select');
         personSelect.id = `incident-person-${toTime}-${id}`;
         personSelect.className = 'flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white';
-        personSelect.onchange = () => updateLeaveAvailability(toTime);
+        personSelect.onchange = () => { updateLeaveAvailability(toTime); updateIncidentPersonnelOptions(toTime); saveData(); };
         personSelect.innerHTML = '<option value="">選擇人員</option>' + 
           availablePersonnel.map(p => `<option value="${p}" ${p === incident.person ? 'selected' : ''}>${p}</option>`).join('');
         
-        // 創建事故類型下拉選單
+        // 創建事故類型選單
         const typeSelect = document.createElement('select');
         typeSelect.id = `incident-type-${toTime}-${id}`;
-        typeSelect.className = 'w-28 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white';
-        typeSelect.onchange = () => toggleCustomInput(toTime, id);
-        typeSelect.innerHTML = incidentTypes.map(t => `<option value="${t}" ${t === incident.type ? 'selected' : ''}>${t}</option>`).join('');
+        typeSelect.className = 'flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white';
+        typeSelect.onchange = () => { toggleCustomInput(toTime, id); saveData(); };
+        typeSelect.innerHTML = incidentTypes[toTime].map(t => `<option value="${t}" ${t === incident.type ? 'selected' : ''}>${t}</option>`).join('');
         
         // 創建安官時段選單
         const guardOfficerSelect = document.createElement('select');
         guardOfficerSelect.id = `incident-guard-officer-${toTime}-${id}`;
-        guardOfficerSelect.className = `w-24 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${incident.type === '衛哨' ? '' : 'hidden'}`;
+        guardOfficerSelect.className = `flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${incident.type === '衛哨' ? '' : 'hidden'}`;
+        guardOfficerSelect.onchange = () => saveData();
         guardOfficerSelect.innerHTML = '<option value="">安官</option>' + 
           guardOfficerShifts.map(s => `<option value="${s}" ${s === incident.guardOfficer ? 'selected' : ''}>${s}</option>`).join('');
         
         // 創建副哨時段選單
         const deputyGuardSelect = document.createElement('select');
         deputyGuardSelect.id = `incident-deputy-guard-${toTime}-${id}`;
-        deputyGuardSelect.className = `w-24 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${incident.type === '衛哨' ? '' : 'hidden'}`;
+        deputyGuardSelect.className = `flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${incident.type === '衛哨' ? '' : 'hidden'}`;
+        deputyGuardSelect.onchange = () => saveData();
         deputyGuardSelect.innerHTML = '<option value="">副哨</option>' + 
           deputyGuardShifts.map(s => `<option value="${s}" ${s === incident.deputyGuard ? 'selected' : ''}>${s}</option>`).join('');
         
-        // 創建自訂輸入框
+        // 創建自��輸入框
         const customInput = document.createElement('input');
         customInput.type = 'text';
         customInput.id = `incident-custom-${toTime}-${id}`;
         customInput.placeholder = '其他事故';
         customInput.value = incident.custom || '';
-        customInput.className = `w-32 p-2 border-2 border-slate-300 rounded-lg text-sm ${incident.type === '其他' ? '' : 'hidden'}`;
+        customInput.className = `flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm ${incident.type === '其他' ? '' : 'hidden'}`;
+        customInput.onchange = () => saveData();
         
         // 創建複製按鈕
         const duplicateBtn = document.createElement('button');
         duplicateBtn.onclick = () => duplicateIncident(toTime, id);
-        duplicateBtn.className = 'p-2 bg-green-100 text-green-600 rounded-lg font-bold text-sm active:bg-green-200';
+        duplicateBtn.className = 'px-3 py-2 bg-green-100 text-green-600 rounded-lg text-xs font-bold active:bg-green-200';
         duplicateBtn.title = '複製此事故';
         duplicateBtn.textContent = '＋';
         
         // 創建刪除按鈕
         const removeBtn = document.createElement('button');
         removeBtn.onclick = () => removeIncident(toTime, id);
-        removeBtn.className = 'p-2 bg-red-100 text-red-600 rounded-lg font-bold text-sm active:bg-red-200';
+        removeBtn.className = 'px-3 py-2 bg-red-100 text-red-600 rounded-lg text-xs font-bold active:bg-red-200';
         removeBtn.textContent = '✕';
         
         // 組裝元素
@@ -589,6 +1742,8 @@
       
       updateStats();
       updateLeaveAvailability(toTime);
+      updateIncidentPersonnelOptions(toTime);
+      saveData();
       showToast('✅ 已複製上一時段事故', 'success');
     }
 
@@ -637,7 +1792,16 @@
     function getNoIncidentPersonnel(time) {
       const leave = getSelectedPersonnel(`leave-${time}`);
       const incidents = getIncidentInfo(time);
-      const incidentPersonnel = incidents.map(inc => inc.person);
+      
+      // 0740 特殊處理：值班人員不算事故
+      let incidentPersonnel;
+      if (time === '0740') {
+        incidentPersonnel = incidents
+          .filter(inc => inc.type !== '值班')
+          .map(inc => inc.person);
+      } else {
+        incidentPersonnel = incidents.map(inc => inc.person);
+      }
       
       const noIncident = personnel.filter(person => 
         !leave.includes(person) && !incidentPersonnel.includes(person)
@@ -645,19 +1809,41 @@
       
       return noIncident;
     }
+    
+    // 取得 0740 值班人員（用於文案顯示）
+    function getDutyShiftPersonnel() {
+      const incidents = getIncidentInfo('0740');
+      return incidents
+        .filter(inc => inc.type === '值班')
+        .map(inc => inc.person);
+    }
 
     // 更新統計
     function updateStats() {
       ['0620', '0740', '1355'].forEach(time => {
         const total = personnel.length;
         const leave = getSelectedPersonnel(`leave-${time}`).length;
+        const incidents = getIncidentInfo(time);
+        
+        // 0740 特殊處理：值班不算事故
+        let incidentCount;
+        if (time === '0740') {
+          // 只計算非值班的事故，值班的 type 可能是 "值班" 或包含其他內容
+          const nonDutyIncidents = incidents.filter(inc => {
+            // 檢查 type 是否為 "值班" 或只包含 "值班" 文字
+            return inc.type !== '值班';
+          });
+          incidentCount = leave + nonDutyIncidents.length;
+        } else {
+          incidentCount = leave + incidents.length;
+        }
+        
         const noIncident = getNoIncidentPersonnel(time).length;
         const present = noIncident;
-        const incident = leave + getIncidentInfo(time).length;
 
         document.getElementById(`stat-total-${time}`).textContent = total;
         document.getElementById(`stat-present-${time}`).textContent = present;
-        document.getElementById(`stat-incident-${time}`).textContent = incident;
+        document.getElementById(`stat-incident-${time}`).textContent = incidentCount;
         
         renderDutyOptions(`duty-${time}`, true);
         updateDeputyOptions(time);
@@ -688,19 +1874,40 @@
       let report = `@All\n${dateStr}事故\n\n`;
 
       ['0620', '0740', '1355'].forEach((time, idx) => {
-        const icon = idx === 0 ? '🔻' : '🔺';
-        report += `${icon}${time}無事故：\n`;
+        const icons = { '0620': '🔻', '0740': '🔹', '1355': '🔺' };
+        report += `${icons[time]}${time}無事故：\n`;
         
         const noIncident = getNoIncidentPersonnel(time);
-        report += noIncident.length > 0 ? noIncident.join('、') : '（無）';
+        
+        // 0740 特殊處理：值班人員加入無事故清單並標註
+        if (time === '0740') {
+          const dutyShiftPersonnel = getDutyShiftPersonnel();
+          const allNoIncident = [...noIncident];
+          
+          // 將值班人員加上（值班）標記
+          dutyShiftPersonnel.forEach(person => {
+            allNoIncident.push(`${person}（值班）`);
+          });
+          
+          report += allNoIncident.length > 0 ? allNoIncident.join('、') : '（無）';
+        } else {
+          report += noIncident.length > 0 ? noIncident.join('、') : '（無）';
+        }
+        
         report += '\n';
 
         const incidents = getIncidentInfo(time);
-        if (incidents.length > 0) {
+        
+        // 0740 特殊處理：過濾掉值班（因為已經在無事故清單中）
+        const displayIncidents = time === '0740' 
+          ? incidents.filter(inc => inc.type !== '值班')
+          : incidents;
+        
+        if (displayIncidents.length > 0) {
           report += '📃事故\n';
           
           const incidentGroups = {};
-          incidents.forEach(inc => {
+          displayIncidents.forEach(inc => {
             if (!incidentGroups[inc.type]) {
               incidentGroups[inc.type] = [];
             }
@@ -720,7 +1927,15 @@
 
         const total = personnel.length;
         const present = noIncident.length;
-        const incidentCount = leave.length + incidents.length;
+        
+        // 0740 特殊處理：值班不算事故
+        let incidentCount;
+        if (time === '0740') {
+          incidentCount = leave.length + incidents.filter(inc => inc.type !== '值班').length;
+        } else {
+          incidentCount = leave.length + incidents.length;
+        }
+        
         report += `\n📊應到：${total} 實到：${present} 事故：${incidentCount}\n\n`;
       });
 
@@ -735,10 +1950,13 @@
         }
       });
 
-      report += '\n請各位學長姐姐看完之後有任何問題請向排值星反應。 謝謝🙏';
+      report += '\n請各位學長姐看完之後有任何問題請向排值星反應。 謝謝🙏';
       
-      document.getElementById('report-preview').textContent = report;
-      document.getElementById('report-preview').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const preview = document.getElementById('report-preview');
+      preview.classList.add('updated');
+      preview.textContent = report;
+      setTimeout(() => preview.classList.remove('updated'), 500);
+      preview.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     // 複製報告
@@ -778,8 +1996,147 @@
         toast.remove();
       }, 2000);
     }
+    
+    // ===== 批次操作功能 =====
+    function toggleBatchMode(time) {
+      const panel = document.getElementById(`batch-panel-${time}`);
+      const btn = document.getElementById(`batch-btn-${time}`);
+      
+      if (batchMode[time]) {
+        cancelBatchMode(time);
+      } else {
+        batchMode[time] = true;
+        panel.classList.remove('hidden');
+        btn.textContent = '取消批次';
+        btn.style.background = 'linear-gradient(135deg, #cd5c5c 0%, #a94442 100%)';
+        renderBatchPersonnel(time);
+      }
+    }
+    
+    function cancelBatchMode(time) {
+      batchMode[time] = false;
+      const panel = document.getElementById(`batch-panel-${time}`);
+      const btn = document.getElementById(`batch-btn-${time}`);
+      panel.classList.add('hidden');
+      btn.textContent = '批次選擇';
+      btn.style.background = 'linear-gradient(135deg, #8b7355 0%, #6b5744 100%)';
+      
+      // 清除所有勾選
+      document.querySelectorAll(`[id^="batch-check-${time}-"]`).forEach(cb => {
+        cb.checked = false;
+      });
+    }
+    
+    function renderBatchPersonnel(time) {
+      const container = document.getElementById(`batch-personnel-${time}`);
+      const leavePersonnel = getSelectedPersonnel(`leave-${time}`);
+      const selectedIncidentPersonnel = [];
+      
+      document.querySelectorAll(`[id^="incident-person-${time}-"]`).forEach(select => {
+        if (select.value) selectedIncidentPersonnel.push(select.value);
+      });
+      
+      const availablePersonnel = personnel.filter(p => 
+        !leavePersonnel.includes(p) && !selectedIncidentPersonnel.includes(p)
+      );
+      
+      container.innerHTML = availablePersonnel.map((person, idx) => `
+        <div>
+          <input type="checkbox" id="batch-check-${time}-${idx}" class="checkbox-btn" data-person="${person}">
+          <label for="batch-check-${time}-${idx}" class="block py-2 px-2 text-center text-xs font-bold rounded-lg cursor-pointer transition-all active:scale-95" style="border: 2px solid #4682b4; background: #e6f3ff; color: #2c5aa0;">
+            ${person}
+          </label>
+        </div>
+      `).join('');
+    }
+    
+    // 批次全選功能
+    function batchSelectAll(time) {
+      const checkboxes = document.querySelectorAll(`[id^="batch-check-${time}-"]`);
+      const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+      
+      checkboxes.forEach(cb => {
+        cb.checked = !allChecked;
+      });
+    }
+    
+    function toggleBatchCustomInput(time) {
+      const typeSelect = document.getElementById(`batch-type-${time}`);
+      const customInput = document.getElementById(`batch-custom-${time}`);
+      
+      if (typeSelect.value === '其他') {
+        customInput.classList.remove('hidden');
+        customInput.focus();
+      } else {
+        customInput.classList.add('hidden');
+        customInput.value = '';
+      }
+    }
+    
+    function applyBatchIncident(time) {
+      const selectedPersonnel = [];
+      document.querySelectorAll(`[id^="batch-check-${time}-"]`).forEach(cb => {
+        if (cb.checked) {
+          selectedPersonnel.push(cb.dataset.person);
+        }
+      });
+      
+      if (selectedPersonnel.length === 0) {
+        showToast('⚠️ 請至少選擇一位人員', 'warning');
+        return;
+      }
+      
+      let incidentType = document.getElementById(`batch-type-${time}`).value;
+      const customValue = document.getElementById(`batch-custom-${time}`).value.trim();
+      
+      // 如果選擇「其他」但沒填寫自訂內容，提示使用者
+      if (incidentType === '其他' && !customValue) {
+        showToast('⚠️ 請輸入其他事故名稱', 'warning');
+        document.getElementById(`batch-custom-${time}`).focus();
+        return;
+      }
+      
+      selectedPersonnel.forEach(person => {
+        const container = document.getElementById(`incident-list-${time}`);
+        const id = incidentCounter[time]++;
+        
+        const div = document.createElement('div');
+        div.id = `incident-${time}-${id}`;
+        div.className = 'incident-row';
+        
+        div.innerHTML = `
+          <select id="incident-person-${time}-${id}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="updateLeaveAvailability('${time}'); updateIncidentPersonnelOptions('${time}'); saveData()">
+            <option value="${person}" selected>${person}</option>
+          </select>
+          <select id="incident-type-${time}-${id}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="toggleCustomInput('${time}', ${id}); saveData()">
+            ${incidentTypes[time].map(t => `<option value="${t}" ${t === incidentType ? 'selected' : ''}>${t}</option>`).join('')}
+          </select>
+          <select id="incident-guard-officer-${time}-${id}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${incidentType === '衛哨' ? '' : 'hidden'}" onchange="saveData()">
+            <option value="">安官</option>
+            ${guardOfficerShifts.map(s => `<option value="${s}">${s}</option>`).join('')}
+          </select>
+          <select id="incident-deputy-guard-${time}-${id}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${incidentType === '衛哨' ? '' : 'hidden'}" onchange="saveData()">
+            <option value="">副哨</option>
+            ${deputyGuardShifts.map(s => `<option value="${s}">${s}</option>`).join('')}
+          </select>
+          <input type="text" id="incident-custom-${time}-${id}" placeholder="其他事故" value="${incidentType === '其他' ? customValue : ''}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm ${incidentType === '其他' ? '' : 'hidden'}" onchange="saveData()">
+          <button onclick="duplicateIncident('${time}', ${id})" class="px-3 py-2 bg-green-100 text-green-600 rounded-lg text-xs font-bold active:bg-green-200" title="複製此事故">＋</button>
+          <button onclick="removeIncident('${time}', ${id})" class="px-3 py-2 bg-red-100 text-red-600 rounded-lg text-xs font-bold active:bg-red-200">✕</button>
+        `;
+        container.appendChild(div);
+      });
+      
+      updateStats();
+      updateLeaveAvailability(time);
+      updateIncidentPersonnelOptions(time);
+      saveData();
+      cancelBatchMode(time);
+      showToast(`✅ 已新增 ${selectedPersonnel.length} 位事故人員`, 'success');
+    }
+    
+
 
     init();
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c4d919613280740',t:'MTc2OTU3MjY3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c60efcf50668466',t:'MTc2OTc3NTc2Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
