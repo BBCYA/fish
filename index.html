@@ -528,36 +528,36 @@
     <div class="md:max-w-2xl md:mx-auto md:space-y-4">
      <div class="md:block overflow-x-auto snap-x snap-mandatory -mx-3 px-3 md:mx-0 md:px-0 md:overflow-visible mt-4">
       <div class="flex md:flex-col gap-3 md:gap-4" style="width: max-content; min-width: 100%;">
-       <!-- 0620 時段 -->
+       <!-- 0550 時段 -->
        <section class="bg-white rounded-xl shadow-md p-3 time-section snap-start flex-shrink-0 md:w-full md:max-w-none" style="width: 90vw;">
-        <h2 class="text-xl font-black brush-title mb-4" style="color: #8b3a3a;">🌊 0620</h2><!-- 事故人員 -->
+        <h2 class="text-xl font-black brush-title mb-4" style="color: #8b3a3a;">🌊 0550</h2><!-- 事故人員 -->
         <div class="mb-4">
          <div class="flex items-center justify-between mb-2">
-          <h3 class="text-base font-bold text-slate-800">▪️ 事故</h3><button onclick="toggleBatchMode('0620')" id="batch-btn-0620" class="px-3 py-1 rounded-lg text-xs font-bold transition-all" style="background: linear-gradient(135deg, #8b7355 0%, #6b5744 100%); color: #fff8e7;"> 批次選擇 </button>
+          <h3 class="text-base font-bold text-slate-800">▪️ 事故</h3><button onclick="toggleBatchMode('0550')" id="batch-btn-0550" class="px-3 py-1 rounded-lg text-xs font-bold transition-all" style="background: linear-gradient(135deg, #8b7355 0%, #6b5744 100%); color: #fff8e7;"> 批次選擇 </button>
          </div>
-         <div id="batch-panel-0620" class="hidden mb-3 p-3 rounded-lg border-2 border-dashed border-indigo-400 bg-indigo-50">
+         <div id="batch-panel-0550" class="hidden mb-3 p-3 rounded-lg border-2 border-dashed border-indigo-400 bg-indigo-50">
           <div class="flex items-center justify-between mb-2">
-           <p class="text-xs font-bold text-slate-700">選擇多人批次加入事故：</p><button onclick="batchSelectAll('0620')" class="px-3 py-1 rounded-lg text-xs font-bold transition-all" style="background: linear-gradient(135deg, #4682b4 0%, #36648b 100%); color: #fff8e7;"> 全選 </button>
+           <p class="text-xs font-bold text-slate-700">選擇多人批次加入事故：</p><button onclick="batchSelectAll('0550')" class="px-3 py-1 rounded-lg text-xs font-bold transition-all" style="background: linear-gradient(135deg, #4682b4 0%, #36648b 100%); color: #fff8e7;"> 全選 </button>
           </div>
-          <div id="batch-personnel-0620" class="grid grid-cols-4 gap-2 mb-3"></div>
+          <div id="batch-personnel-0550" class="grid grid-cols-4 gap-2 mb-3"></div>
           <div class="flex gap-2 mb-2">
-           <select id="batch-type-0620" class="flex-1 p-2 border-2 border-indigo-300 rounded-lg text-sm bg-white" onchange="toggleBatchCustomInput('0620')"> <option value="外宿">外宿</option> <option value="飯班">飯班</option> <option value="值星">值星</option> <option value="FOD">FOD</option> <option value="夜機">夜機</option> <option value="值班">值班</option> <option value="衛哨">衛哨</option> <option value="領裝">領裝</option> <option value="作業">作業</option> <option value="預保">預保</option> <option value="割草班">割草班</option> <option value="公假">公假</option> <option value="查哨">查哨</option> <option value="受訓">受訓</option> <option value="支援">支援</option> <option value="其他">其他</option> </select>
-          </div><input type="text" id="batch-custom-0620" placeholder="請輸入其他事故名稱" class="hidden w-full p-2 border-2 border-indigo-300 rounded-lg text-sm mb-2">
+           <select id="batch-type-0550" class="flex-1 p-2 border-2 border-indigo-300 rounded-lg text-sm bg-white" onchange="toggleBatchCustomInput('0550')"> <option value="外宿">外宿</option> <option value="飯班">飯班</option> <option value="值星">值星</option> <option value="FOD">FOD</option> <option value="夜機">夜機</option> <option value="值班">值班</option> <option value="日哨">日哨</option> <option value="領裝">領裝</option> <option value="作業">作業</option> <option value="預保">預保</option> <option value="割草班">割草班</option> <option value="公假">公假</option> <option value="查哨">查哨</option> <option value="受訓">受訓</option> <option value="支援">支援</option> <option value="其他">其他</option> </select>
+          </div><input type="text" id="batch-custom-0550" placeholder="請輸入其他事故名稱" class="hidden w-full p-2 border-2 border-indigo-300 rounded-lg text-sm mb-2">
           <div class="flex gap-2">
-           <button onclick="applyBatchIncident('0620')" class="flex-1 py-2 rounded-lg text-sm font-bold" style="background: linear-gradient(135deg, #4682b4 0%, #36648b 100%); color: #fff8e7;"> ✓ 批次新增 </button> <button onclick="cancelBatchMode('0620')" class="flex-1 py-2 rounded-lg text-sm font-bold" style="background: #e8dcc8; color: #5a4a3a;"> 取消 </button>
+           <button onclick="applyBatchIncident('0550')" class="flex-1 py-2 rounded-lg text-sm font-bold" style="background: linear-gradient(135deg, #4682b4 0%, #36648b 100%); color: #fff8e7;"> ✓ 批次新增 </button> <button onclick="cancelBatchMode('0550')" class="flex-1 py-2 rounded-lg text-sm font-bold" style="background: #e8dcc8; color: #5a4a3a;"> 取消 </button>
           </div>
          </div>
-         <div id="incident-list-0620" class="space-y-2"></div><button onclick="addIncident('0620')" class="mt-2 w-full py-2 rounded-lg text-sm font-bold active:scale-95 transition-all border-2 border-dashed" style="background: #fff8e7; color: #cd5c5c; border-color: #cd5c5c;"> + 新增事故人員 </button>
+         <div id="incident-list-0550" class="space-y-2"></div><button onclick="addIncident('0550')" class="mt-2 w-full py-2 rounded-lg text-sm font-bold active:scale-95 transition-all border-2 border-dashed" style="background: #fff8e7; color: #cd5c5c; border-color: #cd5c5c;"> + 新增事故人員 </button>
         </div><!-- 休假人員 -->
         <div class="mb-4">
          <h3 class="text-base font-bold text-slate-800 mb-2">🏖️ 休假</h3>
-         <div id="leave-0620" class="grid grid-cols-4 gap-2 mb-2"></div>
+         <div id="leave-0550" class="grid grid-cols-4 gap-2 mb-2"></div>
          <div class="flex gap-2">
-          <button onclick="selectAll('0620', 'leave')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: linear-gradient(135deg, #4682b4 0%, #36648b 100%); color: #fff8e7; box-shadow: 0 2px 8px rgba(70, 130, 180, 0.3);">全選</button> <button onclick="clearAll('0620', 'leave')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: #e8dcc8; color: #5a4a3a; border: 2px solid #c9b89a; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">清除</button>
+          <button onclick="selectAll('0550', 'leave')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: linear-gradient(135deg, #4682b4 0%, #36648b 100%); color: #fff8e7; box-shadow: 0 2px 8px rgba(70, 130, 180, 0.3);">全選</button> <button onclick="clearAll('0550', 'leave')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: #e8dcc8; color: #5a4a3a; border: 2px solid #c9b89a; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">清除</button>
          </div>
         </div><!-- 統計 -->
         <div class="bg-slate-50 rounded-lg p-3">
-         <p class="text-sm font-semibold text-slate-700">📊 應到：<span id="stat-total-0620">26</span> 實到：<span id="stat-present-0620">0</span> 事故：<span id="stat-incident-0620">0</span></p>
+         <p class="text-sm font-semibold text-slate-700">📊 應到：<span id="stat-total-0550">26</span> 實到：<span id="stat-present-0550">0</span> 事故：<span id="stat-incident-0550">0</span></p>
         </div>
        </section><!-- 0740 時段 -->
        <section class="bg-white rounded-xl shadow-md p-3 time-section snap-start flex-shrink-0 md:w-full md:max-w-none" style="width: 90vw;">
@@ -572,7 +572,7 @@
           </div>
           <div id="batch-personnel-0740" class="grid grid-cols-4 gap-2 mb-3"></div>
           <div class="flex gap-2 mb-2">
-           <select id="batch-type-0740" class="flex-1 p-2 border-2 border-indigo-300 rounded-lg text-sm bg-white" onchange="toggleBatchCustomInput('0740')"> <option value="飯班">飯班</option> <option value="值星">值星</option> <option value="FOD">FOD</option> <option value="夜機">夜機</option> <option value="值班">值班</option> <option value="衛哨">衛哨</option> <option value="領裝">領裝</option> <option value="作業">作業</option> <option value="預保">預保</option> <option value="割草班">割草班</option> <option value="公假">公假</option> <option value="查哨">查哨</option> <option value="受訓">受訓</option> <option value="支援">支援</option> <option value="其他">其他</option> </select>
+           <select id="batch-type-0740" class="flex-1 p-2 border-2 border-indigo-300 rounded-lg text-sm bg-white" onchange="toggleBatchCustomInput('0740')"> <option value="飯班">飯班</option> <option value="值星">值星</option> <option value="FOD">FOD</option> <option value="夜機">夜機</option> <option value="值班">值班</option> <option value="日哨">日哨</option> <option value="領裝">領裝</option> <option value="作業">作業</option> <option value="預保">預保</option> <option value="割草班">割草班</option> <option value="公假">公假</option> <option value="查哨">查哨</option> <option value="受訓">受訓</option> <option value="支援">支援</option> <option value="其他">其他</option> </select>
           </div><input type="text" id="batch-custom-0740" placeholder="請輸入其他事故名稱" class="hidden w-full p-2 border-2 border-indigo-300 rounded-lg text-sm mb-2">
           <div class="flex gap-2">
            <button onclick="applyBatchIncident('0740')" class="flex-1 py-2 rounded-lg text-sm font-bold" style="background: linear-gradient(135deg, #4682b4 0%, #36648b 100%); color: #fff8e7;"> ✓ 批次新增 </button> <button onclick="cancelBatchMode('0740')" class="flex-1 py-2 rounded-lg text-sm font-bold" style="background: #e8dcc8; color: #5a4a3a;"> 取消 </button>
@@ -580,14 +580,14 @@
          </div>
          <div id="incident-list-0740" class="space-y-2"></div>
          <div class="flex gap-2 mt-2">
-          <button onclick="addIncident('0740')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all border-2 border-dashed" style="background: #fff8e7; color: #cd5c5c; border-color: #cd5c5c;"> + 新增事故人員 </button> <button onclick="copyIncidents('0620', '0740')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: linear-gradient(135deg, #8b7355 0%, #6b5744 100%); color: #fff8e7; box-shadow: 0 2px 8px rgba(139, 115, 85, 0.3);">同上</button>
+          <button onclick="addIncident('0740')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all border-2 border-dashed" style="background: #fff8e7; color: #cd5c5c; border-color: #cd5c5c;"> + 新增事故人員 </button> <button onclick="copyIncidents('0550', '0740')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: linear-gradient(135deg, #8b7355 0%, #6b5744 100%); color: #fff8e7; box-shadow: 0 2px 8px rgba(139, 115, 85, 0.3);">同上</button>
          </div>
         </div><!-- 休假人員 -->
         <div class="mb-4">
          <h3 class="text-base font-bold text-slate-800 mb-2">🏖️ 休假</h3>
          <div id="leave-0740" class="grid grid-cols-4 gap-2 mb-2"></div>
          <div class="flex gap-2">
-          <button onclick="selectAll('0740', 'leave')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: linear-gradient(135deg, #4682b4 0%, #36648b 100%); color: #fff8e7; box-shadow: 0 2px 8px rgba(70, 130, 180, 0.3);">全選</button> <button onclick="clearAll('0740', 'leave')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: #e8dcc8; color: #5a4a3a; border: 2px solid #c9b89a; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">清除</button> <button onclick="copyFromPrevious('0620', '0740', 'leave')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: linear-gradient(135deg, #8b7355 0%, #6b5744 100%); color: #fff8e7; box-shadow: 0 2px 8px rgba(139, 115, 85, 0.3);">同上</button>
+          <button onclick="selectAll('0740', 'leave')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: linear-gradient(135deg, #4682b4 0%, #36648b 100%); color: #fff8e7; box-shadow: 0 2px 8px rgba(70, 130, 180, 0.3);">全選</button> <button onclick="clearAll('0740', 'leave')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: #e8dcc8; color: #5a4a3a; border: 2px solid #c9b89a; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">清除</button> <button onclick="copyFromPrevious('0550', '0740', 'leave')" class="flex-1 py-2 rounded-lg text-sm font-bold active:scale-95 transition-all" style="background: linear-gradient(135deg, #8b7355 0%, #6b5744 100%); color: #fff8e7; box-shadow: 0 2px 8px rgba(139, 115, 85, 0.3);">同上</button>
          </div>
         </div><!-- 統計 -->
         <div class="bg-slate-50 rounded-lg p-3">
@@ -606,7 +606,7 @@
           </div>
           <div id="batch-personnel-1355" class="grid grid-cols-4 gap-2 mb-3"></div>
           <div class="flex gap-2 mb-2">
-           <select id="batch-type-1355" class="flex-1 p-2 border-2 border-indigo-300 rounded-lg text-sm bg-white" onchange="toggleBatchCustomInput('1355')"> <option value="飯班">飯班</option> <option value="值星">值星</option> <option value="FOD">FOD</option> <option value="夜機">夜機</option> <option value="值班">值班</option> <option value="衛哨">衛哨</option> <option value="領裝">領裝</option> <option value="作業">作業</option> <option value="預保">預保</option> <option value="割草班">割草班</option> <option value="公假">公假</option> <option value="查哨">查哨</option> <option value="受訓">受訓</option> <option value="支援">支援</option> <option value="其他">其他</option> </select>
+           <select id="batch-type-1355" class="flex-1 p-2 border-2 border-indigo-300 rounded-lg text-sm bg-white" onchange="toggleBatchCustomInput('1355')"> <option value="飯班">飯班</option> <option value="值星">值星</option> <option value="FOD">FOD</option> <option value="夜機">夜機</option> <option value="值班">值班</option> <option value="日哨">日哨</option> <option value="領裝">領裝</option> <option value="作業">作業</option> <option value="預保">預保</option> <option value="割草班">割草班</option> <option value="公假">公假</option> <option value="查哨">查哨</option> <option value="受訓">受訓</option> <option value="支援">支援</option> <option value="其他">其他</option> </select>
           </div><input type="text" id="batch-custom-1355" placeholder="請輸入其他事故名稱" class="hidden w-full p-2 border-2 border-indigo-300 rounded-lg text-sm mb-2">
           <div class="flex gap-2">
            <button onclick="applyBatchIncident('1355')" class="flex-1 py-2 rounded-lg text-sm font-bold" style="background: linear-gradient(135deg, #4682b4 0%, #36648b 100%); color: #fff8e7;"> ✓ 批次新增 </button> <button onclick="cancelBatchMode('1355')" class="flex-1 py-2 rounded-lg text-sm font-bold" style="background: #e8dcc8; color: #5a4a3a;"> 取消 </button>
@@ -635,7 +635,7 @@
      <h2 class="text-lg font-bold text-slate-800 mb-3">⭐ 排值星</h2>
      <div class="space-y-3">
       <div class="flex items-center gap-2">
-       <span class="w-16 text-sm font-bold text-slate-700">0620</span> <select id="duty-0620" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="updateDeputyOptions('0620'); saveData()"> <option value="">選擇人員</option> </select> <span class="text-sm font-medium text-slate-600">副：</span> <select id="deputy-0620" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="saveData()"> <option value="">選擇人員</option> </select>
+       <span class="w-16 text-sm font-bold text-slate-700">0550</span> <select id="duty-0550" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="updateDeputyOptions('0550'); saveData()"> <option value="">選擇人員</option> </select> <span class="text-sm font-medium text-slate-600">副：</span> <select id="deputy-0550" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="saveData()"> <option value="">選擇人員</option> </select>
       </div>
       <div class="flex items-center gap-2">
        <span class="w-16 text-sm font-bold text-slate-700">0740</span> <select id="duty-0740" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="updateDeputyOptions('0740'); saveData()"> <option value="">選擇人員</option> </select> <span class="text-sm font-medium text-slate-600">副：</span> <select id="deputy-0740" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="saveData()"> <option value="">選擇人員</option> </select>
@@ -818,16 +818,16 @@
 
     // 事故類型（依時段）
     const incidentTypes = {
-      '0620': ['外宿', '飯班', '值星', 'FOD', '夜機', '值班', '衛哨', '領裝', '作業', '預保', '割草班', '公假', '查哨', '受訓', '支援', '其他'],
-      '0740': ['飯班', '值星', 'FOD', '夜機', '值班', '衛哨', '領裝', '作業', '預保', '割草班', '公假', '查哨', '受訓', '支援', '其他'],
-      '1355': ['飯班', '值星', 'FOD', '夜機', '值班', '衛哨', '領裝', '作業', '預保', '割草班', '公假', '查哨', '受訓', '支援', '其他']
+      '0550': ['外宿', '飯班', '值星', 'FOD', '夜機', '值班', '日哨', '哨補','領裝', '作業', '預保', '割草班', '公假', '查哨', '受訓', '支援', '其他'],
+      '0740': ['飯班', '值星', 'FOD', '夜機', '值班', '日哨', '哨補','領裝', '作業', '預保', '割草班', '公假', '查哨', '受訓', '支援', '其他'],
+      '1355': ['飯班', '值星', 'FOD', '夜機', '值班', '日哨', '哨補','領裝', '作業', '預保', '割草班', '公假', '查哨', '受訓', '支援', '其他']
     };
 
     const guardOfficerShifts = ['06-08', '08-10', '10-12', '12-14', '14-16', '16-18', '18-20', '20-22', '22-24', '24-02', '02-04', '04-06'];
     const deputyGuardShifts = ['06-07', '07-09', '09-11', '11-13', '13-15', '15-17', '17-19', '19-21'];
 
-    let incidentCounter = { '0620': 0, '0740': 0, '1355': 0 };
-    let batchMode = { '0620': false, '0740': false, '1355': false };
+    let incidentCounter = { '0550': 0, '0740': 0, '1355': 0 };
+    let batchMode = { '0550': false, '0740': false, '1355': false };
     let updateTimers = {};
 
     function debouncedUpdate(time) {
@@ -849,19 +849,19 @@
       const data = {
         date: currentDate,
         leave: {
-          '0620': getSelectedPersonnel('leave-0620'),
+          '0550': getSelectedPersonnel('leave-0550'),
           '0740': getSelectedPersonnel('leave-0740'),
           '1355': getSelectedPersonnel('leave-1355')
         },
         incidents: {
-          '0620': getIncidentInfo('0620'),
+          '0550': getIncidentInfo('0550'),
           '0740': getIncidentInfo('0740'),
           '1355': getIncidentInfo('1355')
         },
         duty: {
-          '0620': {
-            duty: document.getElementById('duty-0620').value,
-            deputy: document.getElementById('deputy-0620').value
+          '0550': {
+            duty: document.getElementById('duty-0550').value,
+            deputy: document.getElementById('deputy-0550').value
           },
           '0740': {
             duty: document.getElementById('duty-0740').value,
@@ -894,7 +894,7 @@
         try {
           const data = JSON.parse(savedData);
           
-          ['0620', '0740', '1355'].forEach(time => {
+          ['0550', '0740', '1355'].forEach(time => {
             clearAll(time, 'leave');
             if (data.leave && data.leave[time]) {
               data.leave[time].forEach(person => {
@@ -907,7 +907,7 @@
             }
           });
 
-          ['0620', '0740', '1355'].forEach(time => {
+          ['0550', '0740', '1355'].forEach(time => {
             document.querySelectorAll(`[id^="incident-${time}-"]`).forEach(el => el.remove());
             
             if (data.incidents && data.incidents[time]) {
@@ -918,7 +918,7 @@
           });
 
           if (data.duty) {
-            ['0620', '0740', '1355'].forEach(time => {
+            ['0550', '0740', '1355'].forEach(time => {
               if (data.duty[time]) {
                 const dutySelect = document.getElementById(`duty-${time}`);
                 const deputySelect = document.getElementById(`deputy-${time}`);
@@ -937,7 +937,7 @@
           showToast('⚠️ 載入資料失敗', 'warning');
         }
       } else {
-        ['0620', '0740', '1355'].forEach(time => {
+        ['0550', '0740', '1355'].forEach(time => {
           clearAll(time, 'leave');
           document.querySelectorAll(`[id^="incident-${time}-"]`).forEach(el => el.remove());
           document.getElementById(`duty-${time}`).value = '';
@@ -973,8 +973,8 @@
       let deputyGuard = '';
       let custom = '';
       
-      if (type.includes('衛哨')) {
-        type = '衛哨';
+      if (type.includes('日哨')) {
+        type = '日哨';
         const match = incidentData.type.match(/安官(\d{2}-\d{2})/);
         if (match) guardOfficer = match[1];
         const match2 = incidentData.type.match(/副哨(\d{2}-\d{2})/);
@@ -992,11 +992,11 @@
         <select id="incident-type-${time}-${id}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="toggleCustomInput('${time}', ${id}); saveData()">
           ${incidentTypes[time].map(t => `<option value="${t}" ${t === type ? 'selected' : ''}>${t}</option>`).join('')}
         </select>
-        <select id="incident-guard-officer-${time}-${id}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${type === '衛哨' ? '' : 'hidden'}" onchange="saveData()">
+        <select id="incident-guard-officer-${time}-${id}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${type === '日哨' ? '' : 'hidden'}" onchange="saveData()">
           <option value="">安官</option>
           ${guardOfficerShifts.map(s => `<option value="${s}" ${s === guardOfficer ? 'selected' : ''}>${s}</option>`).join('')}
         </select>
-        <select id="incident-deputy-guard-${time}-${id}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${type === '衛哨' ? '' : 'hidden'}" onchange="saveData()">
+        <select id="incident-deputy-guard-${time}-${id}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${type === '日哨' ? '' : 'hidden'}" onchange="saveData()">
           <option value="">副哨</option>
           ${deputyGuardShifts.map(s => `<option value="${s}" ${s === deputyGuard ? 'selected' : ''}>${s}</option>`).join('')}
         </select>
@@ -1183,11 +1183,11 @@
     function init() {
       setTodayDate();
       
-      ['0620', '0740', '1355'].forEach(time => {
+      ['0550', '0740', '1355'].forEach(time => {
         renderCheckboxList(`leave-${time}`, `leave-${time}`);
       });
 
-      ['0620', '0740', '1355'].forEach(time => {
+      ['0550', '0740', '1355'].forEach(time => {
         renderDutyOptions(`duty-${time}`, false);
         renderDutyOptions(`deputy-${time}`, false);
       });
@@ -1433,11 +1433,11 @@
         <select id="incident-type-${time}-${newId}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="toggleCustomInput('${time}', ${newId}); saveData()">
           ${incidentTypes[time].map(t => `<option value="${t}" ${t === type ? 'selected' : ''}>${t}</option>`).join('')}
         </select>
-        <select id="incident-guard-officer-${time}-${newId}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${type === '衛哨' ? '' : 'hidden'}" onchange="saveData()">
+        <select id="incident-guard-officer-${time}-${newId}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${type === '日哨' ? '' : 'hidden'}" onchange="saveData()">
           <option value="">安官</option>
           ${guardOfficerShifts.map(s => `<option value="${s}" ${s === guardOfficer ? 'selected' : ''}>${s}</option>`).join('')}
         </select>
-        <select id="incident-deputy-guard-${time}-${newId}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${type === '衛哨' ? '' : 'hidden'}" onchange="saveData()">
+        <select id="incident-deputy-guard-${time}-${newId}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${type === '日哨' ? '' : 'hidden'}" onchange="saveData()">
           <option value="">副哨</option>
           ${deputyGuardShifts.map(s => `<option value="${s}" ${s === deputyGuard ? 'selected' : ''}>${s}</option>`).join('')}
         </select>
@@ -1459,7 +1459,7 @@
       const guardOfficerSelect = document.getElementById(`incident-guard-officer-${time}-${id}`);
       const deputyGuardSelect = document.getElementById(`incident-deputy-guard-${time}-${id}`);
       
-      if (typeSelect.value === '衛哨') {
+      if (typeSelect.value === '日哨') {
         if (customInput) customInput.classList.add('hidden');
         if (guardOfficerSelect) guardOfficerSelect.classList.remove('hidden');
         if (deputyGuardSelect) deputyGuardSelect.classList.remove('hidden');
@@ -1598,14 +1598,14 @@
         
         const guardOfficerSelect = document.createElement('select');
         guardOfficerSelect.id = `incident-guard-officer-${toTime}-${id}`;
-        guardOfficerSelect.className = `flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${incident.type === '衛哨' ? '' : 'hidden'}`;
+        guardOfficerSelect.className = `flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${incident.type === '日哨' ? '' : 'hidden'}`;
         guardOfficerSelect.onchange = () => saveData();
         guardOfficerSelect.innerHTML = '<option value="">安官</option>' + 
           guardOfficerShifts.map(s => `<option value="${s}" ${s === incident.guardOfficer ? 'selected' : ''}>${s}</option>`).join('');
         
         const deputyGuardSelect = document.createElement('select');
         deputyGuardSelect.id = `incident-deputy-guard-${toTime}-${id}`;
-        deputyGuardSelect.className = `flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${incident.type === '衛哨' ? '' : 'hidden'}`;
+        deputyGuardSelect.className = `flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${incident.type === '日哨' ? '' : 'hidden'}`;
         deputyGuardSelect.onchange = () => saveData();
         deputyGuardSelect.innerHTML = '<option value="">副哨</option>' + 
           deputyGuardShifts.map(s => `<option value="${s}" ${s === incident.deputyGuard ? 'selected' : ''}>${s}</option>`).join('');
@@ -1671,12 +1671,12 @@
         if (person && type) {
           let incidentType = type === '其他' && custom ? custom : type;
           
-          if (type === '衛哨') {
+          if (type === '日哨') {
             const shifts = [];
             if (guardOfficer) shifts.push(`安官${guardOfficer}`);
             if (deputyGuard) shifts.push(`副哨${deputyGuard}`);
             if (shifts.length > 0) {
-              incidentType = `衛哨(${shifts.join('、')})`;
+              incidentType = `日哨(${shifts.join('、')})`;
             }
           }
           
@@ -1706,7 +1706,7 @@
     }
 
     function updateStats() {
-      ['0620', '0740', '1355'].forEach(time => {
+      ['0550', '0740', '1355'].forEach(time => {
         const total = personnel.length;
         const leave = getSelectedPersonnel(`leave-${time}`);
         const incidents = getIncidentInfo(time);
@@ -1747,8 +1747,8 @@
 
       let report = `@All\n${dateStr}事故\n\n`;
 
-      ['0620', '0740', '1355'].forEach((time, idx) => {
-        const icons = { '0620': '🔻', '0740': '🔹', '1355': '🔺' };
+      ['0550', '0740', '1355'].forEach((time, idx) => {
+        const icons = { '0550': '🔻', '0740': '🔹', '1355': '🔺' };
         report += `${icons[time]}${time}無事故人員\n`;
         
         const noIncident = getNoIncidentPersonnel(time);
@@ -1787,7 +1787,7 @@
       });
 
       report += '📋排值星：\n';
-      ['0620', '0740', '1355'].forEach(time => {
+      ['0550', '0740', '1355'].forEach(time => {
         const duty = document.getElementById(`duty-${time}`).value || '（未指定）';
         const deputy = document.getElementById(`deputy-${time}`).value;
         if (deputy) {
@@ -1952,11 +1952,11 @@
           <select id="incident-type-${time}-${id}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white" onchange="toggleCustomInput('${time}', ${id}); saveData()">
             ${incidentTypes[time].map(t => `<option value="${t}" ${t === incidentType ? 'selected' : ''}>${t}</option>`).join('')}
           </select>
-          <select id="incident-guard-officer-${time}-${id}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${incidentType === '衛哨' ? '' : 'hidden'}" onchange="saveData()">
+          <select id="incident-guard-officer-${time}-${id}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${incidentType === '日哨' ? '' : 'hidden'}" onchange="saveData()">
             <option value="">安官</option>
             ${guardOfficerShifts.map(s => `<option value="${s}">${s}</option>`).join('')}
           </select>
-          <select id="incident-deputy-guard-${time}-${id}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${incidentType === '衛哨' ? '' : 'hidden'}" onchange="saveData()">
+          <select id="incident-deputy-guard-${time}-${id}" class="flex-1 p-2 border-2 border-slate-300 rounded-lg text-sm bg-white ${incidentType === '日哨' ? '' : 'hidden'}" onchange="saveData()">
             <option value="">副哨</option>
             ${deputyGuardShifts.map(s => `<option value="${s}">${s}</option>`).join('')}
           </select>
